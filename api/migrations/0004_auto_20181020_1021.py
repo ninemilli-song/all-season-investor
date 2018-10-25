@@ -7,18 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0003_asset_amount'),
+        ('api', '0003_asset_amount'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='assetcategory',
             name='bucket',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='app.Bucket'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.Bucket'),
         ),
         migrations.AlterField(
             model_name='assettype',
             name='type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='app.AssetCategory'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.AssetCategory'),
         ),
     ]

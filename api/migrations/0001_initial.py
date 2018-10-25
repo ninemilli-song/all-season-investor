@@ -39,6 +39,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='asset',
             name='type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.AssetType'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.AssetType'),
         ),
     ]

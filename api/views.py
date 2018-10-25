@@ -36,21 +36,21 @@ def index(request):
         'user_assets': user_assets
     }
 
-    return render(request, 'app/index.html', context)
+    return render(request, 'api/index.html', context)
 
 
 # 用户资产详情
-def asset(request, user_id):
+def assetView(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     assets = user.asset_set.all()
 
-    return render(request, 'app/asset_detail.html', {
+    return render(request, 'api/asset_detail.html', {
         "user": user,
         "assets": assets
     })
 
 
-class AssetView(APIView):
+class assest(APIView):
 
     def get(self, request, pk, format=None):
         user = get_object_or_404(User, pk=pk)

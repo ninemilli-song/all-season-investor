@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0001_initial'),
+        ('api', '0001_initial'),
     ]
 
     operations = [
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200)),
                 ('mobile', models.CharField(max_length=11)),
                 ('email', models.EmailField(max_length=254)),
-                ('sex', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='app.Sex')),
+                ('sex', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.Sex')),
             ],
         ),
         migrations.RemoveField(
@@ -48,16 +48,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='asset',
             name='type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='app.AssetType'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.AssetType'),
         ),
         migrations.AddField(
             model_name='asset',
             name='owner',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='app.User'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.User'),
         ),
         migrations.AddField(
             model_name='assettype',
             name='type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='app.AssetCategory'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.AssetCategory'),
         ),
     ]

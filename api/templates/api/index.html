@@ -9,7 +9,7 @@
     <ul>
     {% for asset in user_assets %}
         <li>
-            <a href="{% url 'app:asset' asset.user.id %}">{{ asset.user.name }}</a>
+            <a href="{% url 'api:assetView' asset.user.id %}">{{ asset.user.name }}</a>
             <span>{{ asset.amount }}</span>
         </li>
     {% endfor %}

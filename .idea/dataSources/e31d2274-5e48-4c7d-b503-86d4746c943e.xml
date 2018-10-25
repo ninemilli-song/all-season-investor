@@ -921,708 +921,933 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="232" parent="3" name="app_asset"/>
-    <table id="233" parent="3" name="app_assetcategory"/>
-    <table id="234" parent="3" name="app_assettype"/>
-    <table id="235" parent="3" name="app_bucket"/>
-    <table id="236" parent="3" name="app_sex"/>
-    <table id="237" parent="3" name="app_user"/>
-    <table id="238" parent="3" name="auth_group"/>
-    <table id="239" parent="3" name="auth_group_permissions"/>
-    <table id="240" parent="3" name="auth_permission"/>
-    <table id="241" parent="3" name="auth_user"/>
-    <table id="242" parent="3" name="auth_user_groups"/>
-    <table id="243" parent="3" name="auth_user_user_permissions"/>
-    <table id="244" parent="3" name="django_admin_log"/>
-    <table id="245" parent="3" name="django_content_type"/>
-    <table id="246" parent="3" name="django_migrations"/>
-    <table id="247" parent="3" name="django_session"/>
-    <column id="248" parent="232" name="id">
+    <table id="232" parent="3" name="api_asset"/>
+    <table id="233" parent="3" name="api_assetcategory"/>
+    <table id="234" parent="3" name="api_assettype"/>
+    <table id="235" parent="3" name="api_bucket"/>
+    <table id="236" parent="3" name="api_sex"/>
+    <table id="237" parent="3" name="api_user"/>
+    <table id="238" parent="3" name="app_asset"/>
+    <table id="239" parent="3" name="app_assetcategory"/>
+    <table id="240" parent="3" name="app_assettype"/>
+    <table id="241" parent="3" name="app_bucket"/>
+    <table id="242" parent="3" name="app_sex"/>
+    <table id="243" parent="3" name="app_user"/>
+    <table id="244" parent="3" name="auth_group"/>
+    <table id="245" parent="3" name="auth_group_permissions"/>
+    <table id="246" parent="3" name="auth_permission"/>
+    <table id="247" parent="3" name="auth_user"/>
+    <table id="248" parent="3" name="auth_user_groups"/>
+    <table id="249" parent="3" name="auth_user_user_permissions"/>
+    <table id="250" parent="3" name="django_admin_log"/>
+    <table id="251" parent="3" name="django_content_type"/>
+    <table id="252" parent="3" name="django_migrations"/>
+    <table id="253" parent="3" name="django_session"/>
+    <column id="254" parent="232" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="232" name="type_id">
+    <column id="255" parent="232" name="type_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="232" name="owner_id">
+    <column id="256" parent="232" name="owner_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="251" parent="232" name="amount">
+    <column id="257" parent="232" name="amount">
       <Position>4</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="252" parent="232" name="app_asset_type_id_77c9f792_fk_app_assettype_id">
+    <index id="258" parent="232" name="api_asset_type_id_9ccae009_fk_api_assettype_id">
       <ColNames>type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="253" parent="232" name="app_asset_owner_id_ba2a016a_fk_app_user_id">
+    <index id="259" parent="232" name="api_asset_owner_id_456e711a_fk_api_user_id">
       <ColNames>owner_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="254" parent="232" name="PRIMARY">
+    <key id="260" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="255" parent="232" name="app_asset_type_id_77c9f792_fk_app_assettype_id">
+    <foreign-key id="261" parent="232" name="api_asset_type_id_9ccae009_fk_api_assettype_id">
       <ColNames>type_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
-      <RefTableName>app_assettype</RefTableName>
+      <RefTableName>api_assettype</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="256" parent="232" name="app_asset_owner_id_ba2a016a_fk_app_user_id">
+    <foreign-key id="262" parent="232" name="api_asset_owner_id_456e711a_fk_api_user_id">
       <ColNames>owner_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
-      <RefTableName>app_user</RefTableName>
+      <RefTableName>api_user</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="257" parent="233" name="id">
+    <column id="263" parent="233" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="258" parent="233" name="name">
+    <column id="264" parent="233" name="name">
       <Position>2</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="259" parent="233" name="code">
+    <column id="265" parent="233" name="code">
       <Position>3</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="233" name="bucket_id">
+    <column id="266" parent="233" name="bucket_id">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="261" parent="233" name="app_assetcategory_bucket_id_b0949ddf_fk_app_bucket_id">
+    <index id="267" parent="233" name="api_assetcategory_bucket_id_1647e426_fk_api_bucket_id">
       <ColNames>bucket_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="262" parent="233" name="PRIMARY">
+    <key id="268" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="263" parent="233" name="app_assetcategory_bucket_id_b0949ddf_fk_app_bucket_id">
+    <foreign-key id="269" parent="233" name="api_assetcategory_bucket_id_1647e426_fk_api_bucket_id">
       <ColNames>bucket_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
-      <RefTableName>app_bucket</RefTableName>
+      <RefTableName>api_bucket</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="264" parent="234" name="id">
+    <column id="270" parent="234" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="265" parent="234" name="name">
+    <column id="271" parent="234" name="name">
       <Position>2</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="266" parent="234" name="code">
+    <column id="272" parent="234" name="code">
       <Position>3</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="267" parent="234" name="type_id">
+    <column id="273" parent="234" name="type_id">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="268" parent="234" name="app_assettype_type_id_cbf54c5b_fk_app_assetcategory_id">
+    <index id="274" parent="234" name="api_assettype_type_id_069c426d_fk_api_assetcategory_id">
       <ColNames>type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="269" parent="234" name="PRIMARY">
+    <key id="275" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="270" parent="234" name="app_assettype_type_id_cbf54c5b_fk_app_assetcategory_id">
+    <foreign-key id="276" parent="234" name="api_assettype_type_id_069c426d_fk_api_assetcategory_id">
       <ColNames>type_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
-      <RefTableName>app_assetcategory</RefTableName>
+      <RefTableName>api_assetcategory</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="271" parent="235" name="id">
+    <column id="277" parent="235" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="272" parent="235" name="name">
+    <column id="278" parent="235" name="name">
       <Position>2</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="273" parent="235" name="code">
+    <column id="279" parent="235" name="code">
       <Position>3</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="274" parent="235" name="PRIMARY">
+    <key id="280" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="275" parent="236" name="id">
+    <column id="281" parent="236" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="276" parent="236" name="label">
+    <column id="282" parent="236" name="label">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="277" parent="236" name="value">
+    <column id="283" parent="236" name="value">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="278" parent="236" name="PRIMARY">
+    <key id="284" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="279" parent="237" name="id">
+    <column id="285" parent="237" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="280" parent="237" name="name">
+    <column id="286" parent="237" name="name">
       <Position>2</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="281" parent="237" name="mobile">
+    <column id="287" parent="237" name="mobile">
       <Position>3</Position>
       <DataType>varchar(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="282" parent="237" name="email">
+    <column id="288" parent="237" name="email">
       <Position>4</Position>
       <DataType>varchar(254)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="283" parent="237" name="sex_id">
+    <column id="289" parent="237" name="sex_id">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="284" parent="237" name="app_user_sex_id_93256613_fk_app_sex_id">
+    <index id="290" parent="237" name="api_user_sex_id_a2b557c0_fk_api_sex_id">
       <ColNames>sex_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="285" parent="237" name="PRIMARY">
+    <key id="291" parent="237" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="286" parent="237" name="app_user_sex_id_93256613_fk_app_sex_id">
+    <foreign-key id="292" parent="237" name="api_user_sex_id_a2b557c0_fk_api_sex_id">
+      <ColNames>sex_id</ColNames>
+      <RefSchemaName>all_season_investor</RefSchemaName>
+      <RefTableName>api_sex</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="293" parent="238" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="294" parent="238" name="type_id">
+      <Position>2</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="295" parent="238" name="owner_id">
+      <Position>3</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="296" parent="238" name="amount">
+      <Position>4</Position>
+      <DataType>double|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="297" parent="238" name="app_asset_type_id_77c9f792_fk_app_assettype_id">
+      <ColNames>type_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="298" parent="238" name="app_asset_owner_id_ba2a016a_fk_app_user_id">
+      <ColNames>owner_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="299" parent="238" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="300" parent="238" name="app_asset_type_id_77c9f792_fk_app_assettype_id">
+      <ColNames>type_id</ColNames>
+      <RefSchemaName>all_season_investor</RefSchemaName>
+      <RefTableName>app_assettype</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="301" parent="238" name="app_asset_owner_id_ba2a016a_fk_app_user_id">
+      <ColNames>owner_id</ColNames>
+      <RefSchemaName>all_season_investor</RefSchemaName>
+      <RefTableName>app_user</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="302" parent="239" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="303" parent="239" name="name">
+      <Position>2</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="304" parent="239" name="code">
+      <Position>3</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="305" parent="239" name="bucket_id">
+      <Position>4</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="306" parent="239" name="app_assetcategory_bucket_id_b0949ddf_fk_app_bucket_id">
+      <ColNames>bucket_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="307" parent="239" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="308" parent="239" name="app_assetcategory_bucket_id_b0949ddf_fk_app_bucket_id">
+      <ColNames>bucket_id</ColNames>
+      <RefSchemaName>all_season_investor</RefSchemaName>
+      <RefTableName>app_bucket</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="309" parent="240" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="310" parent="240" name="name">
+      <Position>2</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="311" parent="240" name="code">
+      <Position>3</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="312" parent="240" name="type_id">
+      <Position>4</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="313" parent="240" name="app_assettype_type_id_cbf54c5b_fk_app_assetcategory_id">
+      <ColNames>type_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="314" parent="240" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="315" parent="240" name="app_assettype_type_id_cbf54c5b_fk_app_assetcategory_id">
+      <ColNames>type_id</ColNames>
+      <RefSchemaName>all_season_investor</RefSchemaName>
+      <RefTableName>app_assetcategory</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="316" parent="241" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="317" parent="241" name="name">
+      <Position>2</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="318" parent="241" name="code">
+      <Position>3</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="319" parent="241" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="320" parent="242" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="321" parent="242" name="label">
+      <Position>2</Position>
+      <DataType>varchar(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="322" parent="242" name="value">
+      <Position>3</Position>
+      <DataType>varchar(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="323" parent="242" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="324" parent="243" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="325" parent="243" name="name">
+      <Position>2</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="326" parent="243" name="mobile">
+      <Position>3</Position>
+      <DataType>varchar(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="327" parent="243" name="email">
+      <Position>4</Position>
+      <DataType>varchar(254)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="328" parent="243" name="sex_id">
+      <Position>5</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="329" parent="243" name="app_user_sex_id_93256613_fk_app_sex_id">
+      <ColNames>sex_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="330" parent="243" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="331" parent="243" name="app_user_sex_id_93256613_fk_app_sex_id">
       <ColNames>sex_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>app_sex</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="287" parent="238" name="id">
+    <column id="332" parent="244" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="288" parent="238" name="name">
+    <column id="333" parent="244" name="name">
       <Position>2</Position>
       <DataType>varchar(80)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="289" parent="238" name="name">
+    <index id="334" parent="244" name="name">
       <ColNames>name</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="290" parent="238" name="PRIMARY">
+    <key id="335" parent="244" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="291" parent="238" name="name">
+    <key id="336" parent="244" name="name">
       <ColNames>name</ColNames>
       <UnderlyingIndexName>name</UnderlyingIndexName>
     </key>
-    <column id="292" parent="239" name="id">
+    <column id="337" parent="245" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="239" name="group_id">
+    <column id="338" parent="245" name="group_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="294" parent="239" name="permission_id">
+    <column id="339" parent="245" name="permission_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="295" parent="239" name="auth_group_permissions_group_id_permission_id_0cd325b0_uniq">
+    <index id="340" parent="245" name="auth_group_permissions_group_id_permission_id_0cd325b0_uniq">
       <ColNames>group_id
 permission_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="296" parent="239" name="auth_group_permissio_permission_id_84c5c92e_fk_auth_perm">
+    <index id="341" parent="245" name="auth_group_permissio_permission_id_84c5c92e_fk_auth_perm">
       <ColNames>permission_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="297" parent="239" name="PRIMARY">
+    <key id="342" parent="245" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="298" parent="239" name="auth_group_permissions_group_id_permission_id_0cd325b0_uniq">
+    <key id="343" parent="245" name="auth_group_permissions_group_id_permission_id_0cd325b0_uniq">
       <ColNames>group_id
 permission_id</ColNames>
       <UnderlyingIndexName>auth_group_permissions_group_id_permission_id_0cd325b0_uniq</UnderlyingIndexName>
     </key>
-    <foreign-key id="299" parent="239" name="auth_group_permissions_group_id_b120cbf9_fk_auth_group_id">
+    <foreign-key id="344" parent="245" name="auth_group_permissions_group_id_b120cbf9_fk_auth_group_id">
       <ColNames>group_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>auth_group</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="300" parent="239" name="auth_group_permissio_permission_id_84c5c92e_fk_auth_perm">
+    <foreign-key id="345" parent="245" name="auth_group_permissio_permission_id_84c5c92e_fk_auth_perm">
       <ColNames>permission_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>auth_permission</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="301" parent="240" name="id">
+    <column id="346" parent="246" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="302" parent="240" name="name">
+    <column id="347" parent="246" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="303" parent="240" name="content_type_id">
+    <column id="348" parent="246" name="content_type_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="304" parent="240" name="codename">
+    <column id="349" parent="246" name="codename">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="305" parent="240" name="auth_permission_content_type_id_codename_01ab375a_uniq">
+    <index id="350" parent="246" name="auth_permission_content_type_id_codename_01ab375a_uniq">
       <ColNames>content_type_id
 codename</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="306" parent="240" name="PRIMARY">
+    <key id="351" parent="246" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="307" parent="240" name="auth_permission_content_type_id_codename_01ab375a_uniq">
+    <key id="352" parent="246" name="auth_permission_content_type_id_codename_01ab375a_uniq">
       <ColNames>content_type_id
 codename</ColNames>
       <UnderlyingIndexName>auth_permission_content_type_id_codename_01ab375a_uniq</UnderlyingIndexName>
     </key>
-    <foreign-key id="308" parent="240" name="auth_permission_content_type_id_2f476e4b_fk_django_co">
+    <foreign-key id="353" parent="246" name="auth_permission_content_type_id_2f476e4b_fk_django_co">
       <ColNames>content_type_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>django_content_type</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="309" parent="241" name="id">
+    <column id="354" parent="247" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="310" parent="241" name="password">
+    <column id="355" parent="247" name="password">
       <Position>2</Position>
       <DataType>varchar(128)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="311" parent="241" name="last_login">
+    <column id="356" parent="247" name="last_login">
       <Position>3</Position>
       <DataType>datetime(6)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="312" parent="241" name="is_superuser">
+    <column id="357" parent="247" name="is_superuser">
       <Position>4</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="313" parent="241" name="username">
+    <column id="358" parent="247" name="username">
       <Position>5</Position>
       <DataType>varchar(150)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="314" parent="241" name="first_name">
+    <column id="359" parent="247" name="first_name">
       <Position>6</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="315" parent="241" name="last_name">
+    <column id="360" parent="247" name="last_name">
       <Position>7</Position>
       <DataType>varchar(150)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="316" parent="241" name="email">
+    <column id="361" parent="247" name="email">
       <Position>8</Position>
       <DataType>varchar(254)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="317" parent="241" name="is_staff">
+    <column id="362" parent="247" name="is_staff">
       <Position>9</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="318" parent="241" name="is_active">
+    <column id="363" parent="247" name="is_active">
       <Position>10</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="319" parent="241" name="date_joined">
+    <column id="364" parent="247" name="date_joined">
       <Position>11</Position>
       <DataType>datetime(6)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="320" parent="241" name="username">
+    <index id="365" parent="247" name="username">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="321" parent="241" name="PRIMARY">
+    <key id="366" parent="247" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="322" parent="241" name="username">
+    <key id="367" parent="247" name="username">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>username</UnderlyingIndexName>
     </key>
-    <column id="323" parent="242" name="id">
+    <column id="368" parent="248" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="324" parent="242" name="user_id">
+    <column id="369" parent="248" name="user_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="325" parent="242" name="group_id">
+    <column id="370" parent="248" name="group_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="326" parent="242" name="auth_user_groups_user_id_group_id_94350c0c_uniq">
+    <index id="371" parent="248" name="auth_user_groups_user_id_group_id_94350c0c_uniq">
       <ColNames>user_id
 group_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="327" parent="242" name="auth_user_groups_group_id_97559544_fk_auth_group_id">
+    <index id="372" parent="248" name="auth_user_groups_group_id_97559544_fk_auth_group_id">
       <ColNames>group_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="328" parent="242" name="PRIMARY">
+    <key id="373" parent="248" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="329" parent="242" name="auth_user_groups_user_id_group_id_94350c0c_uniq">
+    <key id="374" parent="248" name="auth_user_groups_user_id_group_id_94350c0c_uniq">
       <ColNames>user_id
 group_id</ColNames>
       <UnderlyingIndexName>auth_user_groups_user_id_group_id_94350c0c_uniq</UnderlyingIndexName>
     </key>
-    <foreign-key id="330" parent="242" name="auth_user_groups_user_id_6a12ed8b_fk_auth_user_id">
+    <foreign-key id="375" parent="248" name="auth_user_groups_user_id_6a12ed8b_fk_auth_user_id">
       <ColNames>user_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>auth_user</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="331" parent="242" name="auth_user_groups_group_id_97559544_fk_auth_group_id">
+    <foreign-key id="376" parent="248" name="auth_user_groups_group_id_97559544_fk_auth_group_id">
       <ColNames>group_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>auth_group</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="332" parent="243" name="id">
+    <column id="377" parent="249" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="333" parent="243" name="user_id">
+    <column id="378" parent="249" name="user_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="334" parent="243" name="permission_id">
+    <column id="379" parent="249" name="permission_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="335" parent="243" name="auth_user_user_permissions_user_id_permission_id_14a6b632_uniq">
+    <index id="380" parent="249" name="auth_user_user_permissions_user_id_permission_id_14a6b632_uniq">
       <ColNames>user_id
 permission_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="336" parent="243" name="auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm">
+    <index id="381" parent="249" name="auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm">
       <ColNames>permission_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="337" parent="243" name="PRIMARY">
+    <key id="382" parent="249" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="338" parent="243" name="auth_user_user_permissions_user_id_permission_id_14a6b632_uniq">
+    <key id="383" parent="249" name="auth_user_user_permissions_user_id_permission_id_14a6b632_uniq">
       <ColNames>user_id
 permission_id</ColNames>
       <UnderlyingIndexName>auth_user_user_permissions_user_id_permission_id_14a6b632_uniq</UnderlyingIndexName>
     </key>
-    <foreign-key id="339" parent="243" name="auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id">
+    <foreign-key id="384" parent="249" name="auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id">
       <ColNames>user_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>auth_user</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="340" parent="243" name="auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm">
+    <foreign-key id="385" parent="249" name="auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm">
       <ColNames>permission_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>auth_permission</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="341" parent="244" name="id">
+    <column id="386" parent="250" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="342" parent="244" name="action_time">
+    <column id="387" parent="250" name="action_time">
       <Position>2</Position>
       <DataType>datetime(6)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="343" parent="244" name="object_id">
+    <column id="388" parent="250" name="object_id">
       <Position>3</Position>
       <DataType>longtext|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="344" parent="244" name="object_repr">
+    <column id="389" parent="250" name="object_repr">
       <Position>4</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="345" parent="244" name="action_flag">
+    <column id="390" parent="250" name="action_flag">
       <Position>5</Position>
       <DataType>smallint(5) unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="346" parent="244" name="change_message">
+    <column id="391" parent="250" name="change_message">
       <Position>6</Position>
       <DataType>longtext|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="347" parent="244" name="content_type_id">
+    <column id="392" parent="250" name="content_type_id">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="348" parent="244" name="user_id">
+    <column id="393" parent="250" name="user_id">
       <Position>8</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="349" parent="244" name="django_admin_log_content_type_id_c4bce8eb_fk_django_co">
+    <index id="394" parent="250" name="django_admin_log_content_type_id_c4bce8eb_fk_django_co">
       <ColNames>content_type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="350" parent="244" name="django_admin_log_user_id_c564eba6_fk_auth_user_id">
+    <index id="395" parent="250" name="django_admin_log_user_id_c564eba6_fk_auth_user_id">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="351" parent="244" name="PRIMARY">
+    <key id="396" parent="250" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="352" parent="244" name="django_admin_log_content_type_id_c4bce8eb_fk_django_co">
+    <foreign-key id="397" parent="250" name="django_admin_log_content_type_id_c4bce8eb_fk_django_co">
       <ColNames>content_type_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>django_content_type</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="353" parent="244" name="django_admin_log_user_id_c564eba6_fk_auth_user_id">
+    <foreign-key id="398" parent="250" name="django_admin_log_user_id_c564eba6_fk_auth_user_id">
       <ColNames>user_id</ColNames>
       <RefSchemaName>all_season_investor</RefSchemaName>
       <RefTableName>auth_user</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="354" parent="245" name="id">
+    <column id="399" parent="251" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="355" parent="245" name="app_label">
+    <column id="400" parent="251" name="app_label">
       <Position>2</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="356" parent="245" name="model">
+    <column id="401" parent="251" name="model">
       <Position>3</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="357" parent="245" name="django_content_type_app_label_model_76bd3d3b_uniq">
+    <index id="402" parent="251" name="django_content_type_app_label_model_76bd3d3b_uniq">
       <ColNames>app_label
 model</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="358" parent="245" name="PRIMARY">
+    <key id="403" parent="251" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="359" parent="245" name="django_content_type_app_label_model_76bd3d3b_uniq">
+    <key id="404" parent="251" name="django_content_type_app_label_model_76bd3d3b_uniq">
       <ColNames>app_label
 model</ColNames>
       <UnderlyingIndexName>django_content_type_app_label_model_76bd3d3b_uniq</UnderlyingIndexName>
     </key>
-    <column id="360" parent="246" name="id">
+    <column id="405" parent="252" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="361" parent="246" name="app">
+    <column id="406" parent="252" name="app">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="362" parent="246" name="name">
+    <column id="407" parent="252" name="name">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="363" parent="246" name="applied">
+    <column id="408" parent="252" name="applied">
       <Position>4</Position>
       <DataType>datetime(6)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="364" parent="246" name="PRIMARY">
+    <key id="409" parent="252" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="365" parent="247" name="session_key">
+    <column id="410" parent="253" name="session_key">
       <Position>1</Position>
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="366" parent="247" name="session_data">
+    <column id="411" parent="253" name="session_data">
       <Position>2</Position>
       <DataType>longtext|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="367" parent="247" name="expire_date">
+    <column id="412" parent="253" name="expire_date">
       <Position>3</Position>
       <DataType>datetime(6)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="368" parent="247" name="django_session_expire_date_a5c62663">
+    <index id="413" parent="253" name="django_session_expire_date_a5c62663">
       <ColNames>expire_date</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="369" parent="247" name="PRIMARY">
+    <key id="414" parent="253" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>session_key</ColNames>
       <Primary>1</Primary>
