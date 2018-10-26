@@ -50,7 +50,7 @@ def assetView(request, user_id):
     })
 
 
-class assest(APIView):
+class Asset(APIView):
 
     def get(self, request, pk, format=None):
         user = get_object_or_404(User, pk=pk)
