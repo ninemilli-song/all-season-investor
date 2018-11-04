@@ -55,7 +55,7 @@ def assetView(request, user_id):
 '''
 
 
-class UsersAssetList(APIView):
+class UserList(APIView):
 
     def get(self, request):
         users = User.objects.all()
@@ -81,7 +81,7 @@ class UsersAssetList(APIView):
 '''
 
 
-class AssetByUser(APIView):
+class UserDetail(APIView):
 
     def get(self, request, pk, format=None):
         user = get_object_or_404(User, pk=pk)
