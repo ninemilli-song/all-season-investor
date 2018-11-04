@@ -6,7 +6,7 @@ from django.core.serializers import serialize
 from rest_framework.exceptions import APIException
 
 from .models import User, Asset
-from .serializer import AssetSerializer
+from .serializer import AssetSerializer, UserSerializer
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -50,7 +50,38 @@ def assetView(request, user_id):
     })
 
 
-class Asset(APIView):
+'''
+用户资产列表
+'''
+
+
+class UsersAssetList(APIView):
+
+    def get(self, request):
+        users = User.objects.all()
+
+        user_assets = []
+
+        for user in users:
+            user_asset = {
+                'user': UserSerializer(user).data
+            }
+            total_amount = 0
+            assets = user.asset_set.all()
+            for asset in assets:
+                total_amount += asset.amount
+            user_asset['amount'] = total_amount
+            user_assets.append(user_asset)
+
+        return Response(user_assets)
+
+
+'''
+根据用户id查看用户资产
+'''
+
+
+class AssetByUser(APIView):
 
     def get(self, request, pk, format=None):
         user = get_object_or_404(User, pk=pk)
