@@ -44,6 +44,9 @@ class Sex(models.Model):
     def __str__(self):
         return self.label
 
+    def __unicode__(self):
+        return self.label
+
 
 # 用户
 class User(models.Model):

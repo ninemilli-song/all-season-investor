@@ -63,9 +63,7 @@ class UserList(APIView):
         user_assets = []
 
         for user in users:
-            user_asset = {
-                'user': UserSerializer(user).data
-            }
+            user_asset = UserSerializer(user).data
             total_amount = 0
             assets = user.asset_set.all()
             for asset in assets:
