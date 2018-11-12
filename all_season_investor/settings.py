@@ -109,7 +109,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    '127.0.0.1:3000'
+    '127.0.0.1:3000',
+    'localhost:3000'
 )
 
 # CORS_ORIGIN_REGEX_WHITELIST = (r'^(https?://)?(\w+\.)?google\.com$', )
