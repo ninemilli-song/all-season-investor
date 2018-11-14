@@ -17,5 +17,17 @@
 {% else %}
     <p>No user have asset.</p>
 {% endif %}
+<h1> API DOC: </h1>
+<h2></h2>
+<ul>
+    <li>
+        <a href="{% url 'api:users-asset-list' %}">/api/userList</a>
+        <span>获取投资者列表</span>
+    </li>
+    <li>
+        <a href="{% url 'api:user-asset-detail' 1 %}">/api/userDetail/{$id}</a>
+        <span>获取指定投资者投资详情</span>
+    </li>
+</ul>
 </body>
 </html>
