@@ -44,8 +44,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AssetSerializer(serializers.ModelSerializer):
-    owner = UserSerializer()
-    type = AssetTypeSerializer()
+    owner = UserSerializer(read_only=True)
+    type = AssetTypeSerializer(read_only=True)
 
     class Meta:
         model = Asset
