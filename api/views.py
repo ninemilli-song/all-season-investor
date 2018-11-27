@@ -102,8 +102,8 @@ class InvestorAssets(mixins.ListModelMixin,
         if (type(exc) == MultiValueDictKeyError):
             return Response({
                 'msg': '参数不合法'
-            })
+            }, status = 400)
 
         return Response({
             'msg': '其它错误'
-        }, status=404)
+        }, status = 400)
