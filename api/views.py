@@ -6,7 +6,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveUpdateAPIView
 import json
-from rest_framework import mixins
+from rest_framework import mixins, viewsets
+from rest_framework.decorators import action
+from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 
@@ -49,9 +51,9 @@ def assetView(request, user_id):
 '''
 用户资产列表
 '''
-class UserList(APIView):
+class Investors(viewsets.ViewSet):
 
-    def get(self, request):
+    def list(self, request):
         users = User.objects.all()
 
         user_assets = []
@@ -71,29 +73,37 @@ class UserList(APIView):
 '''
 根据用户id查看用户资产
 '''
-class UserDetail(generics.ListAPIView):
+class InvestorAssets(mixins.ListModelMixin,
+                     mixins.UpdateModelMixin,
+                     mixins.RetrieveModelMixin,
+                     viewsets.GenericViewSet):
 
     serializer_class = AssetSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['pk']
-        user = get_object_or_404(User, pk=user_id)
-        return user.asset_set.all()
+        return Asset.objects.all()
 
+    """根据用户id查询资产"""
+    @action(detail=False, url_name='get_assets_by_user', url_path='user')
+    def get_assets_by_user(self, request, *args, **kwargs):
+        user_id = request.query_params['id']
+        user = get_object_or_404(User, pk=user_id)
+        queryset = user.asset_set.all()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    """异常处理"""
     def handle_exception(self, exc):
+        if (type(exc) == MultiValueDictKeyError):
+            return Response({
+                'msg': '参数不合法'
+            })
+
         return Response({
-            'msg': '用户未找到'
+            'msg': '其它错误'
         }, status=404)
-
-
-"""更新资产"""
-class UpdateAssetAmount(RetrieveUpdateAPIView):
-
-    serializer_class = AssetSerializer
-
-    def get_object(self):
-        user_id = self.kwargs['user']
-        user = get_object_or_404(User, pk=user_id)
-        asset_id = self.kwargs['asset']
-        asset = user.asset_set.get(id=asset_id)
-        return asset

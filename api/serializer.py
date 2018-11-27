@@ -49,4 +49,4 @@ class AssetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Asset
-        fields = ('type', 'owner', 'amount')
+        fields = ('id', 'type', 'owner', 'amount')
