@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Asset, User, AssetType, AssetCategory, Bucket, Sex
+from .models import Asset, AssetType, AssetCategory, Bucket, Sex, Investor
+from django.contrib.auth.models import User
 
 
 class BucketSerializer(serializers.ModelSerializer):
@@ -33,18 +34,34 @@ class SexSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'email')
+        extra_kwargs = {
+            'password': {
+                'write_only': True
+            }
+        }
+
+
+class InvestorSerializer(serializers.ModelSerializer):
     sex = serializers.SlugRelatedField(
         read_only=True,
         slug_field='label'
     )
 
+    user = UserSerializer()
+
     class Meta:
-        model = User
+        model = Investor
         fields = '__all__'
+        depth = 1
+
 
 
 class AssetSerializer(serializers.ModelSerializer):
-    owner = UserSerializer(read_only=True)
+    owner = InvestorSerializer(read_only=True)
     type = AssetTypeSerializer(read_only=True)
 
     class Meta:

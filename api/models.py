@@ -1,5 +1,6 @@
 from django.db import models
 import json
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -49,11 +50,10 @@ class Sex(models.Model):
 
 
 # 用户
-class User(models.Model):
-    name = models.CharField(max_length=200)
+class Investor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True)
     mobile = models.CharField(max_length=11)
-    email = models.EmailField(max_length=254)
 
     def __str__(self):
         return self.name
@@ -65,9 +65,10 @@ class User(models.Model):
 # amount - 资产金额
 class Asset(models.Model):
     type = models.ForeignKey(AssetType, on_delete=models.SET_NULL, null=True)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    owner = models.ForeignKey(Investor, on_delete=models.SET_NULL, null=True)
     amount = models.FloatField(default=0)
 
+
     def __str__(self):
-        return self.type.name + ' - ' + self.owner.name + ' - ' + str(self.amount)
+        return self.type.name + ' - ' + str(self.amount)
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import User, Asset
-from .serializer import AssetSerializer, UserSerializer
+from .models import Investor, Asset
+from .serializer import AssetSerializer, InvestorSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,7 +14,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 
 def index(request):
-    users = User.objects.all()
+    users = Investor.objects.all()
 
     # 用户资产列表
     user_assets = []
@@ -39,7 +39,7 @@ def index(request):
 
 # 用户资产详情
 def assetView(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
+    user = get_object_or_404(Investor, pk=user_id)
     assets = user.asset_set.all()
 
     return render(request, 'api/asset_detail.html', {
@@ -54,12 +54,12 @@ def assetView(request, user_id):
 class Investors(viewsets.ViewSet):
 
     def list(self, request):
-        users = User.objects.all()
+        users = Investor.objects.all()
 
         user_assets = []
 
         for user in users:
-            user_asset = UserSerializer(user).data
+            user_asset = InvestorSerializer(user).data
             total_amount = 0
             assets = user.asset_set.all()
             for asset in assets:
@@ -87,7 +87,7 @@ class InvestorAssets(mixins.ListModelMixin,
     @action(detail=False, url_name='get_assets_by_user', url_path='user')
     def get_assets_by_user(self, request, *args, **kwargs):
         user_id = request.query_params['id']
-        user = get_object_or_404(User, pk=user_id)
+        user = get_object_or_404(Investor, pk=user_id)
         queryset = user.asset_set.all()
         page = self.paginate_queryset(queryset)
         if page is not None:
