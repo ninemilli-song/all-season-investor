@@ -1,6 +1,8 @@
 from django.db import models
 import json
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -58,6 +60,22 @@ class Investor(models.Model):
     def __str__(self):
         return self.name
 
+
+"""
+创建系统用户时同时创建投资者数据
+"""
+@receiver(post_save, sender=User)
+def create_user_investor(sender, instance, created, **kwargs):
+    if created:
+        Investor.objects.create(user=instance)
+
+
+"""
+更新系统用户时同时更新投资者信息
+"""
+@receiver(post_save, sender=User)
+def save_user_investor(sender, instance, **kwargs):
+    instance.investor.save()
 
 # 资产
 # type - 资产类型

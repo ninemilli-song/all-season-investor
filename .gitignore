@@ -1,1 +1,4 @@
-.idea/**
+.idea/*
+/api/migrations/**
+/api/__pycache__/**
+/venv

@@ -56,7 +56,6 @@ class InvestorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Investor
         fields = '__all__'
-        depth = 1
 
 
 
