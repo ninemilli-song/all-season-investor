@@ -12,12 +12,15 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from rest_framework_jwt.settings import api_settings
+from rest_framework_jwt.views import ObtainJSONWebToken
+from datetime import datetime
 
 # Create your views here.
 
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 
 def index(request):
@@ -58,6 +61,8 @@ def assetView(request, user_id):
 '''
 用户资产列表
 '''
+
+
 class Investors(viewsets.ViewSet):
 
     def list(self, request):
@@ -80,6 +85,8 @@ class Investors(viewsets.ViewSet):
 '''
 根据用户id查看用户资产
 '''
+
+
 class InvestorAssets(mixins.ListModelMixin,
                      mixins.UpdateModelMixin,
                      mixins.RetrieveModelMixin,
@@ -120,7 +127,9 @@ class InvestorAssets(mixins.ListModelMixin,
 """
 登陆视图
 """
-class LoginView(generics.CreateAPIView):
+
+
+class LoginView(ObtainJSONWebToken):
     """
     POST auth/login/
     """
@@ -128,24 +137,33 @@ class LoginView(generics.CreateAPIView):
     # class setting
     permission_classes = (permissions.AllowAny,)
 
-    queryset = User.objects.all()
+    # Override global authentication class in there
+    # Then there have no authentication class with the statement below.
+    authentication_classes = ()
 
+    # Override the post method of the super class
     def post(self, request, *args, **kwargs):
-        username = request.data.get("username", "")
-        password = request.data.get("password", "")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            # login saves the user’s ID in the session,
-            # using Django’s session framework.
-            login(request, user)
-            serializer = TokenSerializer(data={
-                # using drf jwt utility functions to generate a token
-                "token": jwt_encode_handler(
-                    jwt_payload_handler(user)
-                )})
-            serializer.is_valid()
-            # return Response(headers={
-            #     'Authorization': 'Bearer ' + serializer.data
-            # },status=status.HTTP_200_OK)
-            return Response(serializer.data)
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.object.get('user') or request.user
+            token = serializer.object.get('token')
+            # response_data = jwt_response_payload_handler(token, user, request)
+
+            # Get investor information by user
+            # Then add investor information into response
+            investor = Investor.objects.get(user=user)
+            investor_data = InvestorSerializer(investor)
+            response = Response(investor_data.data)
+
+            # Set JWT Token into Cookie
+            if api_settings.JWT_AUTH_COOKIE:
+                expiration = (datetime.utcnow() +
+                              api_settings.JWT_EXPIRATION_DELTA)
+                response.set_cookie(api_settings.JWT_AUTH_COOKIE,
+                                    token,
+                                    expires=expiration,
+                                    httponly=True)
+            return response
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
