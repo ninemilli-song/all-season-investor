@@ -1,4 +1,9 @@
-.idea/*
-/api/migrations/**
-/api/__pycache__/**
-/venv
+.idea
+venv/
+.env
+.coverage
+api/__pycache__/
+api/migrations/__pycache__/
+api/__pycache__/**
+api/tests/__pycache__/
+api/views/__pycache__/
