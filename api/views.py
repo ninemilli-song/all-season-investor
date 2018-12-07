@@ -65,6 +65,8 @@ def assetView(request, user_id):
 
 class Investors(viewsets.ViewSet):
 
+    # permission_classes = (permissions.AllowAny,)
+
     def list(self, request):
         users = Investor.objects.all()
 
@@ -94,6 +96,8 @@ class InvestorAssets(mixins.ListModelMixin,
 
     serializer_class = AssetSerializer
 
+    # permission_classes = (permissions.AllowAny,)
+
     def get_queryset(self):
         return Asset.objects.all()
 
@@ -111,17 +115,6 @@ class InvestorAssets(mixins.ListModelMixin,
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
-    """异常处理"""
-    def handle_exception(self, exc):
-        if (type(exc) == MultiValueDictKeyError):
-            return Response({
-                'msg': '参数不合法'
-            }, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response({
-            'msg': '其它错误'
-        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 """

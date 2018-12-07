@@ -51,11 +51,23 @@ class InvestorSerializer(serializers.ModelSerializer):
         slug_field='label'
     )
 
-    user = UserSerializer()
+    # user = UserSerializer()
+
+    # 自定义name attribute
+    name = serializers.SerializerMethodField('get_sysusr_username')
+
+    def get_sysusr_username(self, investor):
+        return investor.user.username
+
+    # 自定义 email attribute
+    email = serializers.SerializerMethodField('get_sysusr_email')
+
+    def get_sysusr_email(self, investor):
+        return investor.user.email
 
     class Meta:
         model = Investor
-        fields = '__all__'
+        fields = ('id', 'sex', 'name', 'email', 'mobile')
 
 
 
