@@ -17,6 +17,7 @@ urlpatterns = [
     path('token/refresh', refresh_jwt_token, name='token_refresh'),
     path('token/verify', verify_jwt_token, name='token_verify'),
     path('auth/login/', views.LoginView.as_view(), name='auth_login'),
+    path('auth/userInfo/', views.UserInfo.as_view(), name='auth_user_info'),
     # path('userDetail/<pk>/', views.UserDetail.as_view(), name='user-asset-detail'),
     # path('userList/', views.UserList.as_view(), name='users-asset-list'),
     # path('updateAsset/<int:user>/<int:asset>', views.UpdateAssetAmount.as_view())

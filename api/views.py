@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
 from .models import Investor, Asset
 from .serializer import AssetSerializer, InvestorSerializer, TokenSerializer
 from rest_framework import generics, status
@@ -12,7 +14,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from rest_framework_jwt.settings import api_settings
-from rest_framework_jwt.views import ObtainJSONWebToken
+from rest_framework_jwt.views import ObtainJSONWebToken, VerifyJSONWebToken
 from datetime import datetime
 
 # Create your views here.
@@ -160,3 +162,35 @@ class LoginView(ObtainJSONWebToken):
             return response
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserInfo(VerifyJSONWebToken):
+
+    serializer_class = InvestorSerializer
+
+    def get(self, request, format=None):
+
+        # Create the instance of JSONWebTokenAuthentication to do the authentication job
+        authentication = JSONWebTokenAuthentication()
+
+        try:
+            '''
+            authentication.authenticate 会抛出异常，所以添加异常捕获
+            '''
+            auth_data = authentication.authenticate(request)
+            if auth_data is None:
+                return Response({}, status=status.HTTP_401_UNAUTHORIZED)
+
+            '''
+            auth_data type is tuple, first is user instance, the second is jwt value.
+            So I serializer the investor attribute of the first argument.
+            '''
+            serializer = self.get_serializer(auth_data[0].investor)
+
+            '''
+            Response the data
+            '''
+            return Response(serializer.data)
+
+        except BaseException as exc:
+            return Response(exc, status=status.HTTP_400_BAD_REQUEST)
