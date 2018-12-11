@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .models import Investor, Asset
-from .serializer import AssetSerializer, InvestorSerializer
+from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, permissions
@@ -132,6 +132,8 @@ class LoginView(ObtainJSONWebToken):
     # Then there have no authentication class with the statement below.
     authentication_classes = ()
 
+    serializer_class = JWTSerializer
+
     # Override the post method of the super class
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -145,7 +147,10 @@ class LoginView(ObtainJSONWebToken):
             # Then add investor information into response
             investor = Investor.objects.get(user=user)
             investor_data = InvestorSerializer(investor)
-            response = Response(investor_data.data)
+            response = Response({
+                'token': token,
+                'user': investor_data.data
+            })
 
             # Set JWT Token into Cookie
             if api_settings.JWT_AUTH_COOKIE:

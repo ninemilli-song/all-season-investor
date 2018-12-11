@@ -186,6 +186,9 @@ CORS_ORIGIN_WHITELIST = (
 
 # CORS_ORIGIN_REGEX_WHITELIST = (r'^(https?://)?(\w+\.)?google\.com$', )
 
+# If True, cookies will be allowed to be included in cross-site HTTP requests. Defaults to False.
+CORS_ALLOW_CREDENTIALS = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

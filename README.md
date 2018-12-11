@@ -36,12 +36,10 @@ nohup python manage.py runserver & disown
 
 [ninemill.song](https://github.com/ninemilli-song)
 
-## Thanks 感谢
-
-Open source project:
+## Reference 参考
 
 - https://github.com/jpadilla/pyjwt - jwt相关
 
-Blog:
+- [Tracking User Login Activity in Django Rest Framework: JWT Authentication](https://medium.com/@atulmishra_69567/tracking-user-login-activity-in-django-rest-framework-jwt-authentication-32e0194e77d0)
 
-- https://medium.com/backticks-tildes/lets-build-an-api-with-django-rest-framework-part-2-cfb87e2c8a6c - jwt相关
+- [Let’s build an API with Django REST Framework — Part 2](https://medium.com/backticks-tildes/lets-build-an-api-with-django-rest-framework-part-2-cfb87e2c8a6c)
