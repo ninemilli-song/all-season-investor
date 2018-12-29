@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from .models import Investor, Asset
-from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer
+from .models import Investor, Asset, Bucket
+from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, permissions
@@ -11,7 +11,6 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import ObtainJSONWebToken, VerifyJSONWebToken
 from datetime import datetime
 from rest_framework import exceptions
-from django.utils.translation import ugettext as _
 
 # Create your views here.
 
@@ -113,6 +112,62 @@ class InvestorAssets(mixins.ListModelMixin,
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, url_name='get_analysis_by_user', url_path='analysis')
+    def get_analysis_by_user(self, request, *args, **kwargs):
+        """Get all asset of the user"""
+        user_id = request.query_params['id']
+        user = get_object_or_404(Investor, pk=user_id)
+        assets_queryset = user.asset_set.all()
+        assets_serializer = self.get_serializer(assets_queryset, many=True)
+
+        buckets_queryset = Bucket.objects.all()
+        buckets_serializer = BucketSerializer(buckets_queryset, many=True)
+
+        analysis_list = []
+        for bucket in buckets_serializer.data:
+            analysis_item = {
+                'bucket': bucket,
+                'assets': [],
+                'amount': 0,
+                'suggestAmount': 0,
+                'rate': 0.5,
+                'suggestRate': 0.2,
+                'title': '有正负波动收益的钱',
+                'analysis': '配置过高，风险较大'
+            }
+
+            # 所有资产总额
+            total_amount = 0
+            for asset in assets_serializer.data:
+                total_amount += asset['amount']
+
+                # 资产和金额归类
+                if asset['type']['type']['bucket']['code'] == bucket['code']:
+                    analysis_item['assets'].append(asset)
+                    analysis_item['amount'] += asset['amount']
+
+            analysis_item['suggestRate'] = bucket['rate']
+            analysis_item['suggestAmount'] = total_amount * float(analysis_item['suggestRate'])
+            analysis_item['rate'] = analysis_item['amount'] / total_amount
+            analysis_item['title'] = bucket['description']
+
+            tip = ''
+            if (analysis_item['rate'] - float(analysis_item['suggestRate'])) > 0.1:
+                if (bucket['code'] == '000001') : tip = '过于保守，可能会拉低收益'
+                if (bucket['code'] == '000002') : tip = '过于激进，风险过高'
+                analysis_item['analysis'] = '配置比例过高，%s！' % (tip,)
+            elif (analysis_item['rate'] - float(analysis_item['suggestRate']) < 0.1):
+                if (bucket['code'] == '000001') : tip = '过于保守，可能会拉低收益'
+                if (bucket['code'] == '000002') : tip = '过于激进，风险过高'
+                analysis_item['analysis'] = '配置比例过低，%s！' % (tip,)
+            else:
+                analysis_item['analysis'] = '资产配置健康！'
+
+            analysis_list.append(analysis_item)
+
+        return Response(analysis_list)
+
 
 
 """
