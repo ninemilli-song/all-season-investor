@@ -13,7 +13,7 @@ class Bucket(models.Model):
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200)
     description = models.CharField(max_length=200, null=True)
-    rate = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    rate = models.FloatField()
 
     def __str__(self):
         return self.name + ' - ' + self.code

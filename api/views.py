@@ -133,8 +133,8 @@ class InvestorAssets(mixins.ListModelMixin,
                 'suggestAmount': 0,
                 'rate': 0.5,
                 'suggestRate': 0.2,
-                'title': '有正负波动收益的钱',
-                'analysis': '配置过高，风险较大'
+                'title': '',
+                'analysis': ''
             }
 
             # 所有资产总额
@@ -148,16 +148,16 @@ class InvestorAssets(mixins.ListModelMixin,
                     analysis_item['amount'] += asset['amount']
 
             analysis_item['suggestRate'] = bucket['rate']
-            analysis_item['suggestAmount'] = total_amount * float(analysis_item['suggestRate'])
-            analysis_item['rate'] = analysis_item['amount'] / total_amount
+            analysis_item['suggestAmount'] = round(total_amount * analysis_item['suggestRate'], 2)
+            analysis_item['rate'] = round(analysis_item['amount'] / total_amount, 3)
             analysis_item['title'] = bucket['description']
 
             tip = ''
-            if (analysis_item['rate'] - float(analysis_item['suggestRate'])) > 0.1:
+            if (analysis_item['rate'] - analysis_item['suggestRate']) > 0.1:
                 if (bucket['code'] == '000001') : tip = '过于保守，可能会拉低收益'
                 if (bucket['code'] == '000002') : tip = '过于激进，风险过高'
                 analysis_item['analysis'] = '配置比例过高，%s！' % (tip,)
-            elif (analysis_item['rate'] - float(analysis_item['suggestRate']) < 0.1):
+            elif (analysis_item['rate'] - analysis_item['suggestRate'] < 0.1):
                 if (bucket['code'] == '000001') : tip = '过于保守，可能会拉低收益'
                 if (bucket['code'] == '000002') : tip = '过于激进，风险过高'
                 analysis_item['analysis'] = '配置比例过低，%s！' % (tip,)
