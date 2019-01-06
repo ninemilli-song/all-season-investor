@@ -10,7 +10,7 @@ Python后台程序
 
 ## Technology stack
 
-工作及框架
+工具及框架
 
 - [Django](https://www.djangoproject.com) - a python web framework
 - [Django REST Framework](http://www.django-rest-framework.org) - a flexible toolkit to build web APIs
@@ -21,20 +21,26 @@ Python后台程序
 - Use Python 3.x.x+
 - Use Django 2.x.x+
 
-## Running the application
+## 项目部署
 
 ```bash
+# 创建虚拟环境
 virtualenv virtenv
+# 指定虚拟环境
 source virtenv/bin/activate
+# 安装项目依赖
 pip install -r requirements.txt
+# 生成数据库迁移文件
 python manage.py makemigrations
+# 数据库迁移
 python manage.py migrate
+# 启动项目
 nohup python manage.py runserver & disown
 ```
 
 ## Author 作者
 
-[ninemill.song](https://github.com/ninemilli-song)
+[ninemill.song - 九毫](https://github.com/ninemilli-song)
 
 ## Reference 参考
 
