@@ -21,7 +21,26 @@ Python后台程序
 - Use Python 3.x.x+
 - Use Django 2.x.x+
 
-## 项目部署
+## 开发环境搭建
+
+1. 使用PyCharm创建Django工程
+
+2. 克隆代码到工程根目录
+
+```bash
+cd ***
+git clone git@github.com:ninemilli-song/all-season-investor.git
+```
+
+3. 设置Project interpreter目录为 **venv** 目录
+
+> Preferences -> Project -> Project interpreter
+
+4. 自动安装requirements.txt中的指定依赖
+
+5. **run** or **debug**
+
+## 生产环境部署
 
 ```bash
 # 创建虚拟环境
