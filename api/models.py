@@ -19,21 +19,21 @@ class Bucket(models.Model):
         return self.name + ' - ' + self.code
 
 
-# 资产品类
+# 资产类目
 # EX: 股票（股票 基金） 债券 黄金 房地产
 class AssetCategory(models.Model):
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200)
-    bucket = models.ForeignKey(Bucket, on_delete=models.SET_NULL, null=True)
+    level = models.ForeignKey(Bucket, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
 
 
-# 资产类型
+# 资产品种
 # ex：上证50 沪深300 格力电器 伊利股份
 class AssetType(models.Model):
-    type = models.ForeignKey(AssetCategory, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(AssetCategory, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200)
 
@@ -66,7 +66,7 @@ class Investor(models.Model):
 
 
 # 资产
-# type - 资产类型
+# type - 资产品种
 # owner - 资产所有者
 # amount - 资产金额
 class Asset(models.Model):

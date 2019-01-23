@@ -143,7 +143,7 @@ class InvestorAssets(mixins.ListModelMixin,
                 total_amount += asset['amount']
 
                 # 资产和金额归类
-                if asset['type']['type']['bucket']['code'] == bucket['code']:
+                if asset['type']['category']['level']['code'] == bucket['code']:
                     analysis_item['assets'].append(asset)
                     analysis_item['amount'] += asset['amount']
 

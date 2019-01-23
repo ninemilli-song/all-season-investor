@@ -13,19 +13,19 @@ class BucketSerializer(serializers.ModelSerializer):
 
 
 class AssetCategorySerializer(serializers.ModelSerializer):
-    bucket = BucketSerializer()
+    level = BucketSerializer()
 
     class Meta:
         model = AssetCategory
-        fields = ('name', 'code', 'bucket')
+        fields = ('name', 'code', 'level')
 
 
 class AssetTypeSerializer(serializers.ModelSerializer):
-    type = AssetCategorySerializer()
+    category = AssetCategorySerializer()
 
     class Meta:
         model = AssetType
-        fields = ('name', 'code', 'type')
+        fields = ('name', 'code', 'category')
 
 
 class SexSerializer(serializers.ModelSerializer):
