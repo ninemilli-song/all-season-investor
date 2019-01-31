@@ -209,7 +209,7 @@ class LoginView(ObtainJSONWebToken):
 
             # Set JWT Token into Cookie
             if api_settings.JWT_AUTH_COOKIE:
-                expiration = (datetime.utcnow() +
+                expiration = (datetime.now() +
                               api_settings.JWT_EXPIRATION_DELTA)
                 response.set_cookie(api_settings.JWT_AUTH_COOKIE,
                                     token,
