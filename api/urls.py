@@ -7,6 +7,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify
 router = DefaultRouter()
 router.register(r'investors', views.Investors, basename='investors-list')
 router.register(r'assets', views.InvestorAssets, basename='assets')
+router.register(r'profile', views.Profile, basename='profile')
 
 # 命名空间
 app_name = 'api'

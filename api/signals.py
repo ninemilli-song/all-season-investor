@@ -1,9 +1,11 @@
 import logging
 
-from .models import UserLoginActivity
+from .models import UserLoginActivity, Investor
 # for logging - define "error" named logging handler and logger in settings.py
 from django.contrib.auth import user_logged_in, user_login_failed
 from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
 
 error_log = logging.getLogger('error')
 
@@ -43,3 +45,31 @@ def log_user_logged_in_failed(sender, credentials, request, **kwargs):
     except Exception as e:
         # log the error
         error_log.error("log_user_logged_in request: %s, error: %s" % (request, e))
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    """
+    使用Profile模式扩展User，添加User时需要创建与其相对应的Investor
+    :param sender:
+    :param instance:
+    :param created:
+    :param kwargs:
+    :return:
+    """
+    if created:
+        Investor.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, created, **kwargs):
+    """
+    使用Profile模式扩展User, 更新User时需要保存与其相对应的Investor
+    :param sender:
+    :param instance:
+    :param created:
+    :param kwargs:
+    :return:
+    """
+    if created:
+        instance.investor.save()

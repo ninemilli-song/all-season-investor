@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .models import Investor, Asset, Bucket
-from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer
+from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer, UserSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, permissions
@@ -11,6 +11,7 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import ObtainJSONWebToken, VerifyJSONWebToken
 from datetime import datetime
 from rest_framework import exceptions
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -60,25 +61,36 @@ def assetView(request, user_id):
 '''
 
 
-class Investors(viewsets.ViewSet):
+class Investors(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
 
-    # permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
-    def list(self, request):
-        users = Investor.objects.all()
+    serializer_class = InvestorSerializer
 
-        user_assets = []
+    def get_queryset(self):
+        return Investor.objects.all()
 
-        for user in users:
-            user_asset = InvestorSerializer(user).data
-            total_amount = 0
-            assets = user.asset_set.all()
-            for asset in assets:
-                total_amount += asset.amount
-            user_asset['amount'] = total_amount
-            user_assets.append(user_asset)
 
-        return Response(user_assets)
+class Profile(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    viewsets.GenericViewSet
+):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = InvestorSerializer(instance.investor)
+        return Response(serializer.data)
+
 
 
 '''

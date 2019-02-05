@@ -1,6 +1,6 @@
 from django.db import models
 import json
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -52,6 +52,17 @@ class Sex(models.Model):
     def __unicode__(self):
         return self.label
 
+#
+# """
+# 自定义用户模型
+# """
+# class User(AbstractUser):
+#     nickname = models.CharField(max_length=50, blank=True)
+#     sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True)
+#     mobile = models.CharField(max_length=11)
+#
+#     class Meta(AbstractUser.Meta):
+#         pass
 
 # 用户
 class Investor(models.Model):
