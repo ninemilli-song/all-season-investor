@@ -1,8 +1,5 @@
 from django.db import models
-import json
 from django.contrib.auth.models import User, AbstractUser
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 # Create your models here.
 
@@ -57,13 +54,6 @@ class Investor(models.Model):
     """
     自定义用户模型
     """
-    # class User(AbstractUser):
-    #     nickname = models.CharField(max_length=50, blank=True)
-    #     sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True)
-    #     mobile = models.CharField(max_length=11)
-    #
-    #     class Meta(AbstractUser.Meta):
-    #         pass
 
     # 用户
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -71,7 +61,7 @@ class Investor(models.Model):
     mobile = models.CharField(max_length=11)
 
     def __str__(self):
-        return self.name
+        return self.user.username
 
 
 # 资产
@@ -83,15 +73,14 @@ class Asset(models.Model):
     owner = models.ForeignKey(Investor, on_delete=models.SET_NULL, null=True)
     amount = models.FloatField(default=0)
 
-
     def __str__(self):
         return self.type.name + ' - ' + str(self.amount)
 
 
-"""
-Create a model to track login activity
-"""
 class UserLoginActivity(models.Model):
+    """
+    Create a model to track login activity
+    """
     # Login Status
     SUCCESS = 'S'
     FAILED = 'F'

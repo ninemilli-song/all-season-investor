@@ -71,6 +71,21 @@ class Profile(
     def get_queryset(self):
         return Investor.objects.all()
 
+    def list(self, request, *args, **kwargs):
+        users = self.get_queryset()
+        user_assets = []
+
+        for user in users:
+            user_asset = self.get_serializer(user).data
+            total_amount = 0
+            assets = user.asset_set.all()
+            for asset in assets:
+                total_amount += asset.amount
+            user_asset['amount'] = total_amount
+            user_assets.append(user_asset)
+
+        return Response(user_assets)
+
 
 class InvestorAssets(mixins.ListModelMixin,
                      mixins.UpdateModelMixin,
