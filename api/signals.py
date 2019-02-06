@@ -57,8 +57,8 @@ def create_user_profile(sender, instance, created, **kwargs):
     :param kwargs:
     :return:
     """
-    if created:
-        Investor.objects.create(user=instance)
+    # if created:
+    #     Investor.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
@@ -71,5 +71,5 @@ def save_user_profile(sender, instance, created, **kwargs):
     :param kwargs:
     :return:
     """
-    if created:
-        instance.investor.save()
+    # if created:
+    #     instance.investor.save()

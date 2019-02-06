@@ -15,7 +15,6 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
-
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
@@ -56,17 +55,15 @@ def assetView(request, user_id):
     })
 
 
-'''
-用户资产列表
-'''
-
-
-class Investors(
+class Profile(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
     viewsets.GenericViewSet
 ):
-
+    """
+    用户资产列表
+    """
     permission_classes = (permissions.IsAuthenticated,)
 
     serializer_class = InvestorSerializer
@@ -75,34 +72,10 @@ class Investors(
         return Investor.objects.all()
 
 
-class Profile(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet
-):
-    serializer_class = UserSerializer
-
-    def get_queryset(self):
-        return User.objects.all()
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = InvestorSerializer(instance.investor)
-        return Response(serializer.data)
-
-
-
-'''
-根据用户id查看用户资产
-'''
-
-
 class InvestorAssets(mixins.ListModelMixin,
                      mixins.UpdateModelMixin,
                      mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
-
     serializer_class = AssetSerializer
 
     # permission_classes = (permissions.AllowAny,)
@@ -110,10 +83,11 @@ class InvestorAssets(mixins.ListModelMixin,
     def get_queryset(self):
         return Asset.objects.all()
 
-    """根据用户id查询资产"""
-
     @action(detail=False, url_name='get_assets_by_user', url_path='user')
     def get_assets_by_user(self, request, *args, **kwargs):
+        """
+        根据用户id查看用户资产
+        """
         user_id = request.query_params['id']
         user = get_object_or_404(Investor, pk=user_id)
         queryset = user.asset_set.all()

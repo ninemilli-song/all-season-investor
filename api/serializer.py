@@ -53,7 +53,7 @@ class InvestorSerializer(serializers.ModelSerializer):
         slug_field='label'
     )
 
-    # user = UserSerializer()
+    user = UserSerializer()
 
     # 自定义name attribute
     name = serializers.SerializerMethodField('get_sysusr_username')
@@ -69,8 +69,21 @@ class InvestorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Investor
-        fields = ('id', 'sex', 'name', 'email', 'mobile')
+        fields = ('id', 'sex', 'name', 'email', 'mobile', 'user')
 
+    def create(self, validated_data):
+        """
+        Overriding the default create method of the Model serializer.
+        :param validated_data: data containing all the details of student
+        :return: return a successfully created student record
+        """
+        user_data = validated_data.pop('user')
+        user = UserSerializer.create(UserSerializer(), validated_data=user_data)
+        investor, created = Investor.objects.update_or_create(
+            user=user,
+            mobile=validated_data.pop('mobile')
+        )
+        return investor
 
 
 class AssetSerializer(serializers.ModelSerializer):
@@ -89,10 +102,10 @@ class TokenSerializer(serializers.Serializer):
     token = serializers.CharField(max_length=255)
 
 
-"""
-Create a custom serializer inherit JSONWebTokenSerializer
-"""
 class JWTSerializer(JSONWebTokenSerializer):
+    """
+    Create a custom serializer inherit JSONWebTokenSerializer
+    """
     def validate(self, attrs):
         credential = {
             self.username_field: attrs.get(self.username_field),

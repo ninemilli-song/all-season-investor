@@ -52,28 +52,26 @@ class Sex(models.Model):
     def __unicode__(self):
         return self.label
 
-#
-# """
-# 自定义用户模型
-# """
-# class User(AbstractUser):
-#     nickname = models.CharField(max_length=50, blank=True)
-#     sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True)
-#     mobile = models.CharField(max_length=11)
-#
-#     class Meta(AbstractUser.Meta):
-#         pass
 
-# 用户
 class Investor(models.Model):
+    """
+    自定义用户模型
+    """
+    # class User(AbstractUser):
+    #     nickname = models.CharField(max_length=50, blank=True)
+    #     sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True)
+    #     mobile = models.CharField(max_length=11)
+    #
+    #     class Meta(AbstractUser.Meta):
+    #         pass
+
+    # 用户
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True)
     mobile = models.CharField(max_length=11)
-    # name = models.CharField(max_length=50, null=True)
-    # email = models.CharField(max_length=100, null=True)
 
-    # def __str__(self):
-    #     return self.name
+    def __str__(self):
+        return self.name
 
 
 # 资产
@@ -112,20 +110,3 @@ class UserLoginActivity(models.Model):
     class Meta:
         verbose_name = 'user_login_activity'
         verbose_name_plural = 'user_login_activities'
-
-
-"""
-创建系统用户时同时创建投资者数据
-"""
-@receiver(post_save, sender=User)
-def create_user_investor(sender, instance, created, **kwargs):
-    if created:
-        Investor.objects.create(user=instance)
-
-
-"""
-更新系统用户时同时更新投资者信息
-"""
-@receiver(post_save, sender=User)
-def save_user_investor(sender, instance, **kwargs):
-    instance.investor.save()
