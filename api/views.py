@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import login, authenticate, user_logged_in
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .models import Investor, Asset, Bucket
@@ -6,12 +7,12 @@ from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, Buck
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, permissions
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import ObtainJSONWebToken, VerifyJSONWebToken
 from datetime import datetime
 from rest_framework import exceptions
-from django.contrib.auth.models import User
+from .forms import SignUpForm
 
 # Create your views here.
 
@@ -251,3 +252,35 @@ class UserInfo(VerifyJSONWebToken):
 
         # except BaseException as exc:
         #     return Response(exc, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+@permission_classes((permissions.AllowAny, ))
+def signup(request):
+    """
+    注册视图
+    :param request:
+    :return:
+    """
+
+    if request.method == 'POST':
+        form = SignUpForm(request.data)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()
+            user.investor.mobile = form.cleaned_data.get('mobile')
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            payload = jwt_payload_handler(user)
+            user_logged_in.send(sender=user.__class__, request=request, user=user)
+            investor = Investor.objects.get(user=user)
+            investor_data = InvestorSerializer(investor)
+            return Response({
+                'token': jwt_encode_handler(payload),
+                'user': investor_data.data
+            })
+
+        return Response({'message': form.errors})
+
+    return Response({'message': 'get'})

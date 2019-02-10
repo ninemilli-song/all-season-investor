@@ -73,3 +73,13 @@ def save_user_profile(sender, instance, created, **kwargs):
     """
     # if created:
     #     instance.investor.save()
+
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    """
+    保存系统用户同时保存自定义用户
+    """
+    if created:
+        Investor.objects.create(user=instance)
+    instance.investor.save()
