@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, authenticate, user_logged_in
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from .models import Investor, Asset, Bucket
+from .models import Investor, Asset, Bucket, Sex
 from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer, UserSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -269,6 +269,8 @@ def signup(request):
             user = form.save()
             user.refresh_from_db()
             user.investor.mobile = form.cleaned_data.get('mobile')
+            sex = Sex.objects.get(id=form.cleaned_data.get('sex') or 1)
+            user.investor.sex = sex
             user.save()
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
@@ -281,6 +283,6 @@ def signup(request):
                 'user': investor_data.data
             })
 
-        return Response({'message': form.errors})
+        return Response({'message': form.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({'message': 'get'})
+    return Response({'message': 'Method Not Allowed'}, status=status.HTTP_404_NOT_FOUND)
