@@ -8,6 +8,7 @@ router = DefaultRouter()
 router.register(r'investors', views.Profile, basename='investors-list')
 router.register(r'assets', views.InvestorAssets, basename='assets')
 router.register(r'profile', views.Profile, basename='profile')
+router.register(r'initial', views.InitialView, basename='initial')
 
 # 命名空间
 app_name = 'api'

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Asset, AssetType, AssetCategory, Bucket, Sex, Investor
+from .models import Asset, AssetType, AssetCategory, Bucket, Sex, Investor, Initial
 from django.contrib.auth.models import User
 from rest_framework_jwt.serializers import JSONWebTokenSerializer, jwt_payload_handler, jwt_encode_handler
 from django.contrib.auth import authenticate, user_logged_in
@@ -134,3 +134,19 @@ class JWTSerializer(JSONWebTokenSerializer):
             msg = 'Must include "{username_field}" and "password".'
             msg = msg.format(username_field=self.username_field)
             raise serializers.ValidationError(msg)
+
+
+class InitialSerializer(serializers.ModelSerializer):
+    """
+    期初数据序列化
+
+    """
+
+    # 基金模型不可编辑
+    # 前端传入基金id 后台通过id查询基金模型 进行数据的创建及更新
+    found = AssetTypeSerializer(read_only=True)
+
+    class Meta:
+        model = Initial
+        fields = '__all__'
+        depth = 1

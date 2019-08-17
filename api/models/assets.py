@@ -27,15 +27,19 @@ class AssetCategory(models.Model):
         return self.name
 
 
-# 资产品种
-# ex：上证50 沪深300 格力电器 伊利股份
 class AssetType(models.Model):
+
+    """
+    资产品种 具体的基金或者股票
+    """
+
     category = models.ForeignKey(AssetCategory, on_delete=models.SET_NULL, null=True)
+
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}[{self.code}]'
 
 
 # 性别

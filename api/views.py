@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, authenticate, user_logged_in
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from .models import Investor, Asset, Bucket, Sex
-from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer, UserSerializer
+from .models import Investor, Asset, Bucket, Sex, Initial
+from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer, UserSerializer, InitialSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, permissions
@@ -171,12 +171,6 @@ class InvestorAssets(mixins.ListModelMixin,
         return Response(analysis_list)
 
 
-
-"""
-登陆视图
-"""
-
-
 class LoginView(ObtainJSONWebToken):
     """
     POST auth/login/
@@ -286,3 +280,39 @@ def signup(request):
         return Response({'message': form.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'message': 'Method Not Allowed'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class InitialView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+):
+    """
+    期初数据 视图
+    """
+    queryset = Initial.objects.all()
+    serializer_class = InitialSerializer
+
+    def create(self, request, *args, **kwargs):
+        """
+        创建期初数据
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        # TODO: 通过基金id查询基金
+        # TODO: 保存基金、起始时间、起始金额数据
+        pass
+
+    def update(self, request, *args, **kwargs):
+        """
+        更新期初数据
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        # TODO: 通过基金id查询基金
+        # TODO: 保存基金、起始时间、起始金额数据
