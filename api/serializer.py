@@ -144,7 +144,8 @@ class InitialSerializer(serializers.ModelSerializer):
 
     # 基金模型不可编辑
     # 前端传入基金id 后台通过id查询基金模型 进行数据的创建及更新
-    found = AssetTypeSerializer(read_only=True)
+    fund = AssetTypeSerializer(read_only=True)
+    start_time = serializers.DateTimeField(format="%s.%f")
 
     class Meta:
         model = Initial

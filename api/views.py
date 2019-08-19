@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, authenticate, user_logged_in
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from .models import Investor, Asset, Bucket, Sex, Initial
+from .models import Investor, Asset, Bucket, Sex, Initial, AssetType
 from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer, UserSerializer, InitialSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -12,7 +12,9 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import ObtainJSONWebToken, VerifyJSONWebToken
 from datetime import datetime
 from rest_framework import exceptions
+from rest_framework.renderers import JSONRenderer
 from .forms import SignUpForm
+import time
 
 # Create your views here.
 
@@ -289,6 +291,17 @@ class InitialView(
     viewsets.GenericViewSet
 ):
     """
+        POST auth/login/
+        """
+    # This permission class will overide the global permission
+    # class setting
+    permission_classes = (permissions.AllowAny,)
+
+    # Override global authentication class in there
+    # Then there have no authentication class with the statement below.
+    authentication_classes = ()
+
+    """
     期初数据 视图
     """
     queryset = Initial.objects.all()
@@ -303,8 +316,53 @@ class InitialView(
         :return:
         """
         # TODO: 通过基金id查询基金
-        # TODO: 保存基金、起始时间、起始金额数据
-        pass
+        body = request.data
+        try:
+            # 基金id
+            fund_id = body['fund_id']
+            # 开始时间
+            start_time = body['start_time']
+            # 起始金额
+            start_amount = body['start_amount']
+        except KeyError as error:
+            return Response({
+                'error': f'KeyError: {error.args[0]}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({
+                'error': f'Error: {error.args[0]}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate request parameter
+        # fund_id is required
+        # start_time is required
+        # start_amount is required
+        if fund_id is None:
+            return Response({
+                'message': 'fund_id field is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        elif start_time is None:
+            return Response({
+                'message': 'start_time field is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        elif start_amount is None:
+            return Response({
+                'message': 'start_amount field is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Find fund by fund_id
+        fund = AssetType.objects.get(pk=fund_id)
+        # 保存基金、起始时间、起始金额数据
+        # Format timestamp to datetime instance
+        start_time_obj = datetime.fromtimestamp(start_time / 1000)
+        initial = Initial(fund=fund, start_time=start_time_obj, start_amount=start_amount)
+        initial.save()
+
+        serializer = InitialSerializer(initial)
+
+        return Response({
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
 
     def update(self, request, *args, **kwargs):
         """
