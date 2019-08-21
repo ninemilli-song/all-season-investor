@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, authenticate, user_logged_in
+from django.db.utils import DatabaseError
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .models import Investor, Asset, Bucket, Sex, Initial, AssetType
-from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer, UserSerializer, InitialSerializer
+from .serializer import AssetSerializer, InvestorSerializer, JWTSerializer, BucketSerializer, UserSerializer, InitialSerializer, AssetTypeSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, permissions
@@ -286,8 +287,10 @@ def signup(request):
 
 class InitialView(
     mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
     """
@@ -310,13 +313,13 @@ class InitialView(
     def create(self, request, *args, **kwargs):
         """
         创建期初数据
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
         """
-        # TODO: 通过基金id查询基金
+        # 通过基金id查询基金
         body = request.data
+        # Validate request parameter
+        # fund_id is required
+        # start_time is required
+        # start_amount is required
         try:
             # 基金id
             fund_id = body['fund_id']
@@ -333,30 +336,19 @@ class InitialView(
                 'error': f'Error: {error.args[0]}'
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate request parameter
-        # fund_id is required
-        # start_time is required
-        # start_amount is required
-        if fund_id is None:
-            return Response({
-                'message': 'fund_id field is required'
-            }, status=status.HTTP_400_BAD_REQUEST)
-        elif start_time is None:
-            return Response({
-                'message': 'start_time field is required'
-            }, status=status.HTTP_400_BAD_REQUEST)
-        elif start_amount is None:
-            return Response({
-                'message': 'start_amount field is required'
-            }, status=status.HTTP_400_BAD_REQUEST)
-
         # Find fund by fund_id
         fund = AssetType.objects.get(pk=fund_id)
         # 保存基金、起始时间、起始金额数据
         # Format timestamp to datetime instance
+        # Js timestamps are in millisconds But Python timestamps are in seconds. so to trans it by 1000
         start_time_obj = datetime.fromtimestamp(start_time / 1000)
         initial = Initial(fund=fund, start_time=start_time_obj, start_amount=start_amount)
-        initial.save()
+        try:
+            initial.save()
+        except DatabaseError as error:
+            return Response({
+                'error': str(error)
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = InitialSerializer(initial)
 
@@ -367,10 +359,7 @@ class InitialView(
     def update(self, request, *args, **kwargs):
         """
         更新期初数据
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
         """
-        # TODO: 通过基金id查询基金
-        # TODO: 保存基金、起始时间、起始金额数据
+        # Overwrite update to partial update data
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
