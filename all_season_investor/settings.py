@@ -201,7 +201,9 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# 将USE_TZ设置为False 全局时区将使用TIME_ZONE中的配置
+# 否则USE_TZ为True, 只有在模版和form中展示时使用TIME_ZONE的配置
+# USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

@@ -3,6 +3,7 @@ from .models import Asset, AssetType, AssetCategory, Bucket, Sex, Investor, Init
 from django.contrib.auth.models import User
 from rest_framework_jwt.serializers import JSONWebTokenSerializer, jwt_payload_handler, jwt_encode_handler
 from django.contrib.auth import authenticate, user_logged_in
+from datetime import datetime, timezone, timedelta
 
 
 class BucketSerializer(serializers.ModelSerializer):
@@ -176,7 +177,15 @@ class InitialSerializer(serializers.ModelSerializer):
 
             data['fund'] = fund
 
-            return data
+        # 转换start_time
+        # 前端传入timestamps为毫秒级 需要转换成python的秒级timestamps
+        if 'start_time' in data:
+            start_time = data.pop('start_time')
+            start_time_obj = datetime.fromtimestamp(start_time / 1000)
+            print(f'time is ====> {start_time_obj}')
+            data['start_time'] = start_time_obj
+
+        return data
 
     class Meta:
         model = Initial
