@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Asset, AssetType, AssetCategory, Bucket, Sex, Investor, Initial
+from .models import Asset, AssetType, AssetCategory, Bucket, Sex, Investor, Initial, InvestRecord
 from django.contrib.auth.models import User
 from rest_framework_jwt.serializers import JSONWebTokenSerializer, jwt_payload_handler, jwt_encode_handler
 from django.contrib.auth import authenticate, user_logged_in
@@ -26,7 +26,7 @@ class AssetTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssetType
-        fields = ('name', 'code', 'category')
+        fields = ('id', 'name', 'code', 'category')
 
 
 class SexSerializer(serializers.ModelSerializer):
@@ -191,3 +191,58 @@ class InitialSerializer(serializers.ModelSerializer):
         model = Initial
         fields = '__all__'
         depth = 1
+
+
+class InvestRecordSerializer(serializers.ModelSerializer):
+    """
+    投资记录序列化
+    """
+
+    # 基金模型不可编辑
+    # 前端传入基金id 后台通过id查询基金模型 进行数据的创建及更新
+    fund = AssetTypeSerializer(read_only=True)
+    data_time = serializers.DateTimeField(format="%s.%f")
+
+    def validate_fund(self, value):
+        """
+        自定义 fund 字段的校验
+        id 只判断类型 & 数据是否存在
+        """
+        if type(value) == 'int':
+            raise serializers.ValidationError("Field fund type is not int.")
+
+        try:
+            fund = AssetType.objects.get(pk=value)
+        except AssetType.DoesNotExist:
+            raise serializers.ValidationError(f'Fund {value} dose not exist.')
+
+        return value
+
+    def to_internal_value(self, data):
+        """
+        修改反序列化行为
+        由于fund参数为id 需要将其转换成对应的fund数据 所以使用此方法进行转换
+        """
+        if 'fund' in data:
+            fund_id = data.pop('fund', None)
+            try:
+                fund = AssetType.objects.get(pk=fund_id)
+            except AssetType.DoesNotExist:
+                raise serializers.ValidationError(f'Fund {value} dose not exist.')
+
+            data['fund'] = fund
+
+        # 转换start_time
+        # 前端传入timestamps为毫秒级 需要转换成python的秒级timestamps
+        if 'data_time' in data:
+            data_time = data.pop('data_time')
+            data_time_obj = datetime.fromtimestamp(data_time / 1000)
+            data['data_time'] = data_time_obj
+
+        return data
+
+    class Meta:
+        model = InvestRecord
+        fields = '__all__'
+        depth = 1
+

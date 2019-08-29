@@ -68,17 +68,21 @@ class Investor(models.Model):
         return self.user.username
 
 
-# 资产
-# type - 资产品种
-# owner - 资产所有者
-# amount - 资产金额
 class Asset(models.Model):
+    """
+    资产
+    type - 资产品种
+    owner - 资产所有者
+    pv - 资本现值(Present value)
+    principal - 本金
+    """
     type = models.ForeignKey(AssetType, on_delete=models.SET_NULL, null=True)
     owner = models.ForeignKey(Investor, on_delete=models.SET_NULL, null=True)
-    amount = models.FloatField(default=0)
+    pv = models.FloatField(default=0)
+    principal = models.FloatField(default=0)
 
     def __str__(self):
-        return self.type.name + ' - ' + str(self.amount)
+        return self.type.name + ' - ' + str(self.pv)
 
 
 class UserLoginActivity(models.Model):
