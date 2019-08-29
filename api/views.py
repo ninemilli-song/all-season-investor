@@ -351,6 +351,9 @@ class FundView(
 
 class InvestRecordView(
     mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
     """
@@ -368,7 +371,7 @@ class InvestRecordView(
     # Then there have no authentication class with the statement below.
     authentication_classes = ()
 
-    queryset = InvestRecord
+    queryset = InvestRecord.objects.all()
     serializer_class = InvestRecordSerializer
 
     def create(self, request, *args, **kwargs):
