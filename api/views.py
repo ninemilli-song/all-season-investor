@@ -91,7 +91,7 @@ class Profile(
             total_amount = 0
             assets = user.asset_set.all()
             for asset in assets:
-                total_amount += asset.amount
+                total_amount += asset.pv
             user_asset['amount'] = total_amount
             user_assets.append(user_asset)
 
@@ -152,12 +152,12 @@ class InvestorAssets(mixins.ListModelMixin,
             # 所有资产总额
             total_amount = 0
             for asset in assets_serializer.data:
-                total_amount += asset['amount']
+                total_amount += asset['pv']
 
                 # 资产和金额归类
                 if asset['type']['category']['level']['code'] == bucket['code']:
                     analysis_item['assets'].append(asset)
-                    analysis_item['amount'] += asset['amount']
+                    analysis_item['amount'] += asset['pv']
 
             analysis_item['suggestRate'] = bucket['rate']
             analysis_item['suggestAmount'] = round(total_amount * analysis_item['suggestRate'], 2)

@@ -93,7 +93,7 @@ class AssetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Asset
-        fields = ('id', 'type', 'owner', 'amount')
+        fields = ('id', 'type', 'owner', 'pv')
 
 
 class TokenSerializer(serializers.Serializer):
@@ -201,7 +201,7 @@ class InvestRecordSerializer(serializers.ModelSerializer):
     # 基金模型不可编辑
     # 前端传入基金id 后台通过id查询基金模型 进行数据的创建及更新
     fund = AssetTypeSerializer(read_only=True)
-    data_time = serializers.DateTimeField(format="%s.%f")
+    date_time = serializers.DateTimeField(format="%s.%f")
 
     def validate_fund(self, value):
         """
@@ -234,10 +234,10 @@ class InvestRecordSerializer(serializers.ModelSerializer):
 
         # 转换start_time
         # 前端传入timestamps为毫秒级 需要转换成python的秒级timestamps
-        if 'data_time' in data:
-            data_time = data.pop('data_time')
-            data_time_obj = datetime.fromtimestamp(data_time / 1000)
-            data['data_time'] = data_time_obj
+        if 'date_time' in data:
+            date_time = data.pop('date_time')
+            date_time_obj = datetime.fromtimestamp(date_time / 1000)
+            data['date_time'] = date_time_obj
 
         return data
 
