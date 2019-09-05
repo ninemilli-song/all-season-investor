@@ -1,5 +1,5 @@
 from django.db import models
-from .assets import AssetType
+from .assets import AssetType, Investor
 
 
 class Initial(models.Model):
@@ -14,6 +14,8 @@ class Initial(models.Model):
     start_time = models.DateTimeField()
     # 定投起始金额
     start_amount = models.FloatField()
+    # 所有者
+    owner = models.ForeignKey(Investor, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f'{self.fund.name}[{self.fund.code}]'
