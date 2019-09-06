@@ -4,6 +4,8 @@ from ..serializer import AssetSerializer, BucketSerializer
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework import exceptions
 
 
 class InvestorAssets(mixins.ListModelMixin,
@@ -11,8 +13,6 @@ class InvestorAssets(mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
     serializer_class = AssetSerializer
-
-    # permission_classes = (permissions.AllowAny,)
 
     def get_queryset(self):
         return Asset.objects.all()
@@ -22,8 +22,21 @@ class InvestorAssets(mixins.ListModelMixin,
         """
         根据用户id查看用户资产
         """
-        user_id = request.query_params['id']
-        user = get_object_or_404(Investor, pk=user_id)
+        # Create the instance of JSONWebTokenAuthentication to do the authentication job
+        authentication = JSONWebTokenAuthentication()
+
+        # try:
+        '''
+        authentication.authenticate 会抛出异常，所以添加异常捕获
+        '''
+        auth_data = authentication.authenticate(request)
+        if auth_data is None:
+            raise exceptions.NotAuthenticated()
+
+        user = auth_data[0].investor
+
+        # user_id = request.query_params['id']
+        # user = get_object_or_404(Investor, pk=user_id)
         queryset = user.asset_set.all()
         page = self.paginate_queryset(queryset)
         if page is not None:
