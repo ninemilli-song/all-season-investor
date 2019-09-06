@@ -49,8 +49,21 @@ class InvestorAssets(mixins.ListModelMixin,
     @action(detail=False, url_name='get_analysis_by_user', url_path='analysis')
     def get_analysis_by_user(self, request, *args, **kwargs):
         """Get all asset of the user"""
-        user_id = request.query_params['id']
-        user = get_object_or_404(Investor, pk=user_id)
+        # Create the instance of JSONWebTokenAuthentication to do the authentication job
+        authentication = JSONWebTokenAuthentication()
+
+        # try:
+        '''
+        authentication.authenticate 会抛出异常，所以添加异常捕获
+        '''
+        auth_data = authentication.authenticate(request)
+        if auth_data is None:
+            raise exceptions.NotAuthenticated()
+
+        user = auth_data[0].investor
+
+        # user_id = request.query_params['id']
+        # user = get_object_or_404(Investor, pk=user_id)
         assets_queryset = user.asset_set.all()
         assets_serializer = self.get_serializer(assets_queryset, many=True)
 
