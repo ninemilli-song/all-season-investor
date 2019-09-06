@@ -41,7 +41,7 @@ class FundListView(APIView):
                 acc_amount = 0
                 for invest_record in invest_records:
                     acc_amount += invest_record.amount
-                principal = initial.start_amount + acc_amount
+                principal = float('%.2f' % (initial.start_amount + acc_amount))
                 # 收率 = 现值 - 成本
                 profit = float('%.2f' % (fund.pv - principal))
                 # 收益率 = 利润 / 成本
