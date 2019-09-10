@@ -1,6 +1,6 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from ..models import Asset, Initial, InvestRecord
-from ..serializer import AssetSerializer
+from ..models import Initial, InvestRecord, AssetType
+from ..serializer import AssetTypeSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework_jwt.views import APIView
@@ -35,15 +35,22 @@ class FundListView(APIView):
         for initial in initials:
             # 根据基金id & 用户 获取基金档案数据
             try:
-                fund = Asset.objects.get(type=initial.fund.id, owner=owner.id)
+                asset_type = AssetType.objects.get(id=initial.fund.id)
                 # 本金 = 定投期初金额 + 定投累积金额
                 invest_records = InvestRecord.objects.filter(fund=initial.fund.id, owner=owner.id)
+                # 计算成本
+                pv = 0
+                cur_data_time = None
                 acc_amount = 0
                 for invest_record in invest_records:
                     acc_amount += invest_record.amount
+                    # 查找当前市值，以定投记录中时间最近的市值为准
+                    if cur_data_time is None or cur_data_time < invest_record.date_time:
+                        cur_data_time = invest_record.date_time
+                        pv = invest_record.pv
                 principal = float('%.2f' % (initial.start_amount + acc_amount))
                 # 收率 = 现值 - 成本
-                profit = float('%.2f' % (fund.pv - principal))
+                profit = float('%.2f' % (pv - principal))
                 # 收益率 = 利润 / 成本
                 profit_rate = float('%.4f' % (profit / principal))
                 # 投资时长（秒） = 当前时间（秒） - 定投开始时间（秒）
@@ -55,14 +62,14 @@ class FundListView(APIView):
                 profit_rate_annual = float('%.4f' % (profit_rate / (delta_days / 365)))
 
                 result.append({
-                    'fund': AssetSerializer(fund).data,
+                    'assetType': AssetTypeSerializer(asset_type).data,
                     'principal': principal,
-                    'pv': fund.pv,
+                    'pv': pv,
                     'profit': profit,
                     'profitRate': profit_rate,
                     'profitRateAnnual': profit_rate_annual
                 })
-            except Asset.DoesNotExist:
+            except AssetType.DoesNotExist:
                 pass
 
         return Response(result, status=status.HTTP_200_OK)
