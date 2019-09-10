@@ -66,9 +66,12 @@ python manage.py migrate
 nohup python manage.py runserver & disown
 ```
 
+## 文档
+[接口设计、模型设计相关文档](https://www.yuque.com/ninemilli-song/investor)
+
 ## Author 作者
 
-[ninemill.song - 九毫](https://github.com/ninemilli-song)
+[ninemill.song - 九毫](https://www.yuque.com/ninemilli-song)
 
 ## Reference 参考
 
