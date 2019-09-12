@@ -51,3 +51,23 @@ class InvestRecordView(
         serializer.save(owner=owner)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    """
+    List a queryset.
+    """
+    def list(self, request, *args, **kwargs):
+        fund_id = request.query_params.get('fund')
+        invest_record_queryset = self.get_queryset()
+        if fund_id is not None:
+            invest_record_queryset_fund_id = invest_record_queryset.filter(fund=fund_id)
+            queryset = self.filter_queryset(invest_record_queryset_fund_id)
+        else:
+            queryset = self.filter_queryset(invest_record_queryset)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
