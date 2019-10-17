@@ -60,9 +60,9 @@ class InvestRecordView(
         invest_record_queryset = self.get_queryset()
         if fund_id is not None:
             invest_record_queryset_fund_id = invest_record_queryset.filter(fund=fund_id)
-            queryset = self.filter_queryset(invest_record_queryset_fund_id)
+            queryset = self.filter_queryset(invest_record_queryset_fund_id).order_by('-date_time')
         else:
-            queryset = self.filter_queryset(invest_record_queryset)
+            queryset = self.filter_queryset(invest_record_queryset).order_by('-date_time')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
