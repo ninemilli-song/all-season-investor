@@ -62,12 +62,14 @@ class FundListView(APIView):
                 profit_rate_annual = float('%.4f' % (profit_rate / (delta_days / 365)))
 
                 result.append({
-                    'assetType': AssetTypeSerializer(asset_type).data,
-                    'principal': principal,
-                    'pv': pv,
-                    'profit': profit,
-                    'profitRate': profit_rate,
-                    'profitRateAnnual': profit_rate_annual
+                    'assetType': AssetTypeSerializer(asset_type).data,  # 基金
+                    'principal': principal,                             # 本金
+                    'pv': pv,                                           # 市值
+                    'profit': profit,                                   # 收益
+                    'profitRate': profit_rate,                          # 收益率
+                    'profitRateAnnual': profit_rate_annual,             # 年化收益率
+                    'startTime': initial.start_time.timestamp(),        # 起始时间
+                    'startAmount': initial.start_amount                 # 起始金额
                 })
             except AssetType.DoesNotExist:
                 pass

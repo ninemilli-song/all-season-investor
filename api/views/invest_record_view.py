@@ -1,3 +1,7 @@
+"""
+投资记录视图
+每一条定投明细
+"""
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from ..models import InvestRecord, Initial
 from ..serializer import InvestRecordSerializer
@@ -14,10 +18,6 @@ class InvestRecordView(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
-    """
-    投资记录视图
-    """
-
     """
     POST auth/login/
     """
