@@ -1,5 +1,5 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from ..models import Initial, InvestRecord, AssetType
+from ..models import Initial, InvestRecord, AssetType, Dividend
 from ..serializer import AssetTypeSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -48,16 +48,28 @@ class FundListView(APIView):
                     if cur_data_time is None or cur_data_time < invest_record.date_time:
                         cur_data_time = invest_record.date_time
                         pv = invest_record.pv
+
                 principal = float('%.2f' % (initial.start_amount + acc_amount))
-                # 收率 = 现值 - 成本
-                profit = float('%.2f' % (pv - principal))
+
+                # 统计历史分红总计
+                dividends = Dividend.objects.filter(fund=initial.fund.id)
+                dividend_amount = 0
+                for dividend in dividends:
+                    dividend_amount += dividend.amount
+
+                # 收益 = （现值 + 历史分红） - 成本
+                profit = float('%.2f' % (pv + dividend_amount - principal))
+
                 # 收益率 = 利润 / 成本
                 profit_rate = float('%.4f' % (profit / principal))
+
                 # 投资时长（秒） = 当前时间（秒） - 定投开始时间（秒）
                 delta_time = datetime.now().timestamp() - initial.start_time.timestamp()
+
                 # 投资天数 = 投资时长（秒）/ (24 * 60 * 60)
                 delta_days = int(delta_time / (24 * 60 * 60))
                 print('👉🏻 ---> delta_days is: ', delta_days)
+
                 # 年化收益 = 收益率 / (投资天数 / 365)
                 profit_rate_annual = float('%.4f' % (profit_rate / (delta_days / 365)))
 

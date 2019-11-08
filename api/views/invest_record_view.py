@@ -3,7 +3,7 @@
 每一条定投明细
 """
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from ..models import InvestRecord, Initial
+from ..models import InvestRecord, Initial, Dividend
 from ..serializer import InvestRecordSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -80,16 +80,28 @@ class InvestRecordView(
             # 计算到当前定投记录时间为止的定投成本
             cur_principal = fund_initial_start_amount
             for i in serializer.data:
-                # 将定投时间下于当前定投记录时间的投入金额记入成本中
+                # 将定投时间下于当前定投记录时间的投入金额记入成本中, 累加定投金额
                 if float(item.get('date_time')) >= float(i.get('date_time')):
                     cur_principal += i.get('amount')
+
+            # 累加历史分红金额
+            dividends = Dividend.objects.filter(fund=fund_id)
+            dividend_amount = 0
+            for dividend_item in dividends:
+                # 累加分红日期小于当前定投记录日期的分红
+                if dividend_item.time.timestamp() <= float(item.get('date_time')):
+                    dividend_amount += dividend_item.amount
+
             # 计算当前定投记录时间点下的收益 profit
-            cur_profit = float('%.2f' % (item.get('pv') - cur_principal))
+            cur_profit = float('%.2f' % (item.get('pv') + dividend_amount - cur_principal))
+
             # 计算当前定投记录时间眯下的收益率 profit_rate
             cur_profit_rate = float('%.4f' % (cur_profit / cur_principal))
+
             # 计算当前定投记录时间点下的年化收益率 profit_rate_annual
             delta_time = float(item.get('date_time')) - fund_initial_start_time.timestamp()
             delta_days = int(delta_time / (24 * 60 * 60))
+
             # 年化收益 = 收益率 / (投资天数 / 365)
             profit_rate_annual = float('%.4f' % (cur_profit_rate / (delta_days / 365)))
 
