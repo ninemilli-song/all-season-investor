@@ -66,6 +66,37 @@ python manage.py migrate
 nohup python manage.py runserver & disown
 ```
 
+### Troublesome
+
+1. 安装 mysqlclient 失败
+
+```
+raise EnvironmentError("%s not found" % (_mysql_config_path,))
+OSError: mysql_config not found
+```
+
+解决方法：
+
+安装 mysql-connector-c:
+```
+brew install mysql-connector-c
+```
+
+安装位置这个目录下有mysql_config
+> /usr/local/Cellar/mysql-client/8.0.23/bin
+
+将上面的路径加入到环境变量中：
+```
+vim ~/.bash_profile
+
+export PATH=${PATH}:/usr/local/mysql/bin:/usr/local/Cellar/mysql-client/8.0.23/bin
+```
+
+使修改的配置生效：
+```
+source ~/.bash_profile
+```
+
 ## 文档
 [接口设计、模型设计相关文档](https://www.yuque.com/ninemilli-song/investor)
 
