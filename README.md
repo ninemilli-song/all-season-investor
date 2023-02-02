@@ -41,30 +41,46 @@ git clone git@github.com:ninemilli-song/all-season-investor.git
 
 ## 生产环境部署
 
-```bash
-# 安装虚环境
-pip install virtualenv
 
-# 使用虚环境为应用创建虚拟环境
-# 在工程中分建立一个venv目录，该目录中复制了一份完整的当前系统的Python环境
-virtualenv venv
+### 安装虚环境
+`pip install virtualenv`
 
-# 指定虚拟环境
-# 后面的安装与执行的Python命令都会在这个目录下进行
-source ./venv/bin/activate
+### 使用虚环境为应用创建虚拟环境
+在工程中分建立一个venv目录，该目录中复制了一份完整的当前系统的Python环境
+`virtualenv venv`
 
-# 安装项目依赖
-pip install -r requirements.txt
+### 指定虚拟环境
+后面的安装与执行的Python命令都会在这个目录下进行
 
-# 生成数据库迁移文件
-python manage.py makemigrations
+`source ./venv/bin/activate`
 
-# 数据库迁移，写入数据库
-python manage.py migrate
+### 安装项目依赖
+`pip install -r requirements.txt` 
 
-# 启动项目
-nohup python manage.py runserver & disown
+### 生成数据库迁移文件
+`python manage.py makemigrations`
+
+#### 如果出现如下错误：
 ```
+django.core.exceptions.ImproperlyConfigured: Error loading MySQLdb module.
+Did you install mysqlclient?
+```
+
+#### 解决方法如下：
+##### 首先安装mysql包
+`pip install pymysql`
+
+##### app目录的__init__.py文件中加入这句：
+```
+import pymysql
+pymysql.install_as_MySQLdb()
+```
+
+### 数据库迁移，写入数据库
+`python manage.py migrate`
+
+### 启动项目
+`nohup python manage.py runserver & disown`
 
 ### Troublesome
 
@@ -72,7 +88,7 @@ nohup python manage.py runserver & disown
 
 ```
 raise EnvironmentError("%s not found" % (_mysql_config_path,))
-OSError: mysql_config not found
+OSError: mysql_config not found 
 ```
 
 解决方法：

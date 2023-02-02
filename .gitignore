@@ -7,3 +7,4 @@ api/__pycache__/
 api/migrations/
 api/tests/__pycache__/
 api/views/__pycache__/
+**/__pycache__/

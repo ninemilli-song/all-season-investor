@@ -155,7 +155,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'all_season_investor',          # 数据库名
         'USER': 'root',                         # 用户名
-        'PASSWORD': '19851005',                 # 密码
+        'PASSWORD': 'mysql123456~',             # 密码
         'HOST': '127.0.0.1'
     }
 }
