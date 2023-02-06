@@ -8,3 +8,4 @@ api/migrations/
 api/tests/__pycache__/
 api/views/__pycache__/
 **/__pycache__/
+nohup.out

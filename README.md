@@ -59,6 +59,7 @@ git clone git@github.com:ninemilli-song/all-season-investor.git
 
 ### 生成数据库迁移文件
 `python manage.py makemigrations`
+`python manage.py makemigrations api`
 
 #### 如果出现如下错误：
 ```
@@ -78,6 +79,7 @@ pymysql.install_as_MySQLdb()
 
 ### 数据库迁移，写入数据库
 `python manage.py migrate`
+`python manage.py migrate api`
 
 ### 启动项目
 `nohup python manage.py runserver & disown`

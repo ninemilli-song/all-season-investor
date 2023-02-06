@@ -7,6 +7,11 @@ from datetime import datetime, timezone, timedelta
 
 
 class BucketSerializer(serializers.ModelSerializer):
+    # 自定义name attribute
+    description = serializers.SerializerMethodField('get_customize_description')
+
+    def get_customize_description(self, bucket):
+        return bucket.description if bucket.description != None else ''
 
     class Meta:
         model = Bucket

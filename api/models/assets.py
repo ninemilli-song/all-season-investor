@@ -9,8 +9,8 @@ from django.contrib.auth.models import User, AbstractUser
 class Bucket(models.Model):
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200)
-    description = models.CharField(max_length=200, null=True)
-    rate = models.FloatField()
+    description = models.CharField(max_length=200, null=True, blank=True)
+    rate = models.FloatField(null=True)
 
     def __str__(self):
         return self.name + ' - ' + self.code

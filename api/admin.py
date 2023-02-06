@@ -8,7 +8,7 @@ from .models import Bucket, AssetCategory, AssetType, Sex, User, Asset, Investor
 class BucketAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {
-            'fields': ['name']
+            'fields': ['name', 'rate', 'description']
         }),
         ('Code', {
             'fields': ['code']

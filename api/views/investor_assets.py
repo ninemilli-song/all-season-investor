@@ -95,7 +95,7 @@ class InvestorAssets(mixins.ListModelMixin,
 
             analysis_item['suggestRate'] = bucket['rate']
             analysis_item['suggestAmount'] = round(total_amount * analysis_item['suggestRate'], 2)
-            analysis_item['rate'] = round(analysis_item['amount'] / total_amount, 3)
+            analysis_item['rate'] = round(analysis_item['amount'] / total_amount, 3) if total_amount > 0 else 0
             analysis_item['title'] = bucket['description']
 
             tip = ''
