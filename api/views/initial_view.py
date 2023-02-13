@@ -1,4 +1,4 @@
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+# from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from ..models import Initial
 from ..serializer import InitialSerializer
 from rest_framework import status
@@ -20,11 +20,11 @@ class InitialView(
         """
     # This permission class will overide the global permission
     # class setting
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     # Override global authentication class in there
     # Then there have no authentication class with the statement below.
-    authentication_classes = ()
+    # authentication_classes = ()
 
     """
     期初数据 视图
@@ -34,21 +34,22 @@ class InitialView(
 
     def create(self, request, *args, **kwargs):
         # Create the instance of JSONWebTokenAuthentication to do the authentication job
-        authentication = JSONWebTokenAuthentication()
+        # authentication = JSONWebTokenAuthentication()
 
         # try:
         '''
         authentication.authenticate 会抛出异常，所以添加异常捕获
         '''
-        auth_data = authentication.authenticate(request)
-        if auth_data is None:
-            raise exceptions.NotAuthenticated()
-
-        owner = auth_data[0].investor
+        # auth_data = authentication.authenticate(request)
+        # if auth_data is None:
+        #     raise exceptions.NotAuthenticated()
+        #
+        # owner = auth_data[0].investor
+        investor = request.user.investor
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(owner=owner)
+        serializer.save(owner=investor)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 

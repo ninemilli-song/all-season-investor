@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import Asset, AssetType, AssetCategory, Bucket, Sex, Investor, Initial, InvestRecord
 from django.contrib.auth.models import User
-from rest_framework_jwt.serializers import JSONWebTokenSerializer, jwt_payload_handler, jwt_encode_handler
+# from rest_framework_jwt.serializers import JSONWebTokenSerializer, jwt_payload_handler, jwt_encode_handler
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate, user_logged_in
 from datetime import datetime, timezone, timedelta
 
@@ -108,38 +109,44 @@ class TokenSerializer(serializers.Serializer):
     token = serializers.CharField(max_length=255)
 
 
-class JWTSerializer(JSONWebTokenSerializer):
-    """
-    Create a custom serializer inherit JSONWebTokenSerializer
-    """
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
     def validate(self, attrs):
-        credential = {
-            self.username_field: attrs.get(self.username_field),
-            'password': attrs.get('password')
-        }
+        user = authenticate(**attrs)
 
-        if all(credential.values()):
-            user = authenticate(request=self.context['request'], **credential)
+        if user and user.is_active:
+            return user
 
-            if user:
-                if not user.is_active:
-                    msg = 'User account is disabled.'
-                    raise serializers.ValidationError(msg)
-
-                payload = jwt_payload_handler(user)
-                user_logged_in.send(sender=user.__class__, request=self.context['request'], user=user)
-
-                return {
-                    'token': jwt_encode_handler(payload),
-                    'user': user
-                }
-            else:
-                msg = 'Unable to log in with provided credentials.'
-                raise serializers.ValidationError(msg)
-        else:
-            msg = 'Must include "{username_field}" and "password".'
-            msg = msg.format(username_field=self.username_field)
-            raise serializers.ValidationError(msg)
+        raise serializers.ValidationError('Incorrect credentials')
+        # credential = {
+        #     self.username_field: attrs.get(self.username_field),
+        #     'password': attrs.get('password')
+        # }
+        #
+        # if all(credential.values()):
+        #     user = authenticate(request=self.context['request'], **credential)
+        #
+        #     if user:
+        #         if not user.is_active:
+        #             msg = 'User account is disabled.'
+        #             raise serializers.ValidationError(msg)
+        #
+        #         payload = jwt_payload_handler(user)
+        #         user_logged_in.send(sender=user.__class__, request=self.context['request'], user=user)
+        #
+        #         return {
+        #             'token': jwt_encode_handler(payload),
+        #             'user': user
+        #         }
+        #     else:
+        #         msg = 'Unable to log in with provided credentials.'
+        #         raise serializers.ValidationError(msg)
+        # else:
+        #     msg = 'Must include "{username_field}" and "password".'
+        #     msg = msg.format(username_field=self.username_field)
+        #     raise serializers.ValidationError(msg)
 
 
 class InitialSerializer(serializers.ModelSerializer):
@@ -178,7 +185,7 @@ class InitialSerializer(serializers.ModelSerializer):
             try:
                 fund = AssetType.objects.get(pk=fund_id)
             except AssetType.DoesNotExist:
-                raise serializers.ValidationError(f'Fund {value} dose not exist.')
+                raise serializers.ValidationError(f'Fund {fund_id} dose not exist.')
 
             data['fund'] = fund
 
@@ -233,7 +240,7 @@ class InvestRecordSerializer(serializers.ModelSerializer):
             try:
                 fund = AssetType.objects.get(pk=fund_id)
             except AssetType.DoesNotExist:
-                raise serializers.ValidationError(f'Fund {value} dose not exist.')
+                raise serializers.ValidationError(f'Fund {fund_id} dose not exist.')
 
             data['fund'] = fund
 

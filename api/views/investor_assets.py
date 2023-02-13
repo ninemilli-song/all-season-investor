@@ -4,7 +4,7 @@ from ..serializer import AssetSerializer, BucketSerializer
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+# from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import exceptions
 
 
@@ -23,49 +23,49 @@ class InvestorAssets(mixins.ListModelMixin,
         根据用户id查看用户资产
         """
         # Create the instance of JSONWebTokenAuthentication to do the authentication job
-        authentication = JSONWebTokenAuthentication()
+        # authentication = JSONWebTokenAuthentication()
 
         # try:
         '''
         authentication.authenticate 会抛出异常，所以添加异常捕获
         '''
-        auth_data = authentication.authenticate(request)
-        if auth_data is None:
-            raise exceptions.NotAuthenticated()
-
-        user = auth_data[0].investor
+        # auth_data = authentication.authenticate(request)
+        # if auth_data is None:
+        #     raise exceptions.NotAuthenticated()
+        #
+        # user = auth_data[0].investor
 
         # user_id = request.query_params['id']
         # user = get_object_or_404(Investor, pk=user_id)
-        queryset = user.asset_set.all()
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        # queryset = user.asset_set.all()
+        # page = self.paginate_queryset(queryset)
+        # if page is not None:
+        #     serializer = self.get_serializer(page, many=True)
+        #     return self.get_paginated_response(serializer.data)
+        #
+        # serializer = self.get_serializer(queryset, many=True)
+        # return Response(serializer.data)
 
     @action(detail=False, url_name='get_analysis_by_user', url_path='analysis')
     def get_analysis_by_user(self, request, *args, **kwargs):
         """Get all asset of the user"""
         # Create the instance of JSONWebTokenAuthentication to do the authentication job
-        authentication = JSONWebTokenAuthentication()
+        # authentication = JSONWebTokenAuthentication()
 
         # try:
         '''
         authentication.authenticate 会抛出异常，所以添加异常捕获
         '''
-        auth_data = authentication.authenticate(request)
-        if auth_data is None:
-            raise exceptions.NotAuthenticated()
-
-        user = auth_data[0].investor
+        # auth_data = authentication.authenticate(request)
+        # if auth_data is None:
+        #     raise exceptions.NotAuthenticated()
+        #
+        # user = auth_data[0].investor
 
         # user_id = request.query_params['id']
         # user = get_object_or_404(Investor, pk=user_id)
-        assets_queryset = user.asset_set.all()
-        assets_serializer = self.get_serializer(assets_queryset, many=True)
+        # assets_queryset = user.asset_set.all()
+        # assets_serializer = self.get_serializer(assets_queryset, many=True)
 
         buckets_queryset = Bucket.objects.all()
         buckets_serializer = BucketSerializer(buckets_queryset, many=True)
@@ -85,13 +85,13 @@ class InvestorAssets(mixins.ListModelMixin,
 
             # 所有资产总额
             total_amount = 0
-            for asset in assets_serializer.data:
-                total_amount += asset['pv']
-
-                # 资产和金额归类
-                if asset['type']['category']['level']['code'] == bucket['code']:
-                    analysis_item['assets'].append(asset)
-                    analysis_item['amount'] += asset['pv']
+            # for asset in assets_serializer.data:
+            #     total_amount += asset['pv']
+            #
+            #     # 资产和金额归类
+            #     if asset['type']['category']['level']['code'] == bucket['code']:
+            #         analysis_item['assets'].append(asset)
+            #         analysis_item['amount'] += asset['pv']
 
             analysis_item['suggestRate'] = bucket['rate']
             analysis_item['suggestAmount'] = round(total_amount * analysis_item['suggestRate'], 2)

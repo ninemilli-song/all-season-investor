@@ -1,18 +1,21 @@
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+# from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from ..models import Initial, InvestRecord, AssetType, Dividend
 from ..serializer import AssetTypeSerializer
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework_jwt.views import APIView
+# from rest_framework_jwt.views import APIView
 from datetime import datetime
-from rest_framework import exceptions
+from rest_framework import exceptions, generics, permissions
 
 
-class FundListView(APIView):
+class FundListView(generics.GenericAPIView):
     """
     Get fund list
     *
     """
+
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, format=None):
         """
         Return a list of fund
@@ -21,23 +24,26 @@ class FundListView(APIView):
         :return:
         """
         # Create the instance of JSONWebTokenAuthentication to do the authentication job
-        authentication = JSONWebTokenAuthentication()
-        auth_data = authentication.authenticate(request)
-        if auth_data is None:
-            raise exceptions.NotAuthenticated()
+        # authentication = JSONWebTokenAuthentication()
+        # auth_data = authentication.authenticate(request)
+        # if auth_data is None:
+        #     raise exceptions.NotAuthenticated()
+        #
+        # owner = auth_data[0].investor
 
-        owner = auth_data[0].investor
+        # 获取当前用户信息
+        investor = request.user.investor
 
         result = []
         # 获取当前用户的定投期初数据
-        initials = Initial.objects.filter(owner=owner.id)
+        initials = Initial.objects.filter(owner=investor)
 
         for initial in initials:
             # 根据基金id & 用户 获取基金档案数据
             try:
                 asset_type = AssetType.objects.get(id=initial.fund.id)
                 # 本金 = 定投期初金额 + 定投累积金额
-                invest_records = InvestRecord.objects.filter(fund=initial.fund.id, owner=owner.id)
+                invest_records = InvestRecord.objects.filter(fund=initial.fund.id, owner=investor)
                 # 计算成本
                 pv = 0
                 cur_data_time = None

@@ -2,13 +2,14 @@
 投资记录视图
 每一条定投明细
 """
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+# from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from ..models import InvestRecord, Initial, Dividend
 from ..serializer import InvestRecordSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, permissions
 from rest_framework import exceptions
+from datetime import datetime
 
 
 class InvestRecordView(
@@ -23,32 +24,33 @@ class InvestRecordView(
     """
     # This permission class will overide the global permission
     # class setting
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     # Override global authentication class in there
     # Then there have no authentication class with the statement below.
-    authentication_classes = ()
+    # authentication_classes = ()
 
     queryset = InvestRecord.objects.all()
     serializer_class = InvestRecordSerializer
 
     def create(self, request, *args, **kwargs):
         # Create the instance of JSONWebTokenAuthentication to do the authentication job
-        authentication = JSONWebTokenAuthentication()
+        # authentication = JSONWebTokenAuthentication()
 
         # try:
         '''
         authentication.authenticate 会抛出异常，所以添加异常捕获
         '''
-        auth_data = authentication.authenticate(request)
-        if auth_data is None:
-            raise exceptions.NotAuthenticated()
-
-        owner = auth_data[0].investor
+        # auth_data = authentication.authenticate(request)
+        # if auth_data is None:
+        #     raise exceptions.NotAuthenticated()
+        #
+        # owner = auth_data[0].investor
+        investor = request.user.investor
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(owner=owner)
+        serializer.save(owner=investor)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -72,9 +74,13 @@ class InvestRecordView(
         serializer = self.get_serializer(queryset, many=True)
 
         # 本基金的期初数据
-        fund_initial = Initial.objects.get(fund=fund_id)
-        fund_initial_start_amount = fund_initial.start_amount
-        fund_initial_start_time = fund_initial.start_time
+        try:
+            fund_initial = Initial.objects.get(fund=fund_id)
+            fund_initial_start_amount = fund_initial.start_amount
+            fund_initial_start_time = fund_initial.start_time
+        except Initial.DoesNotExist:
+            fund_initial_start_amount = 0
+            fund_initial_start_time = datetime.now()
 
         for item in serializer.data:
             # 计算到当前定投记录时间为止的定投成本
